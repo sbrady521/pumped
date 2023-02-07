@@ -1,10 +1,12 @@
 import React from 'react'
 import { Input } from './Input'
 import { FaSearch } from 'react-icons/fa';
+import { twMerge } from 'tailwind-merge'
 
 export const Searchbar: React.FC<React.HTMLProps<HTMLInputElement>> = (props) => {
+  const { className, ...rest } = props
   return (
-    <div className='relative'>
+    <div className='relative w-full'>
       <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none" >
         <FaSearch />
       </div>
@@ -12,8 +14,8 @@ export const Searchbar: React.FC<React.HTMLProps<HTMLInputElement>> = (props) =>
         type="search" 
         id="default-search" 
         placeholder='search exercises...'
-        className='pl-10'
-        {...props}
+        className={twMerge('pl-10', className)}
+        {...rest}
       />
     </div>
   )

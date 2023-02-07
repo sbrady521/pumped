@@ -1,14 +1,25 @@
 import React from 'react'
 import { twMerge } from 'tailwind-merge'
 
+export interface InputProps extends React.HTMLProps<HTMLInputElement> {
+  label?: string
+}
+
 export const Input: React.FC<React.HTMLProps<HTMLInputElement>> = (props: React.HTMLProps<HTMLInputElement>) => {
 
-  const { className, ...rest } = props
+  const { className, label, ...rest } = props
 
   return (
-    <input 
-      className={twMerge("block p-4 pl-6 text-sm text-grey-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-grey-500 focus:border-grey-900  focus-visible:ring-grey-900 focus-visible:border-grey-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-grey-700 dark:focus:ring-grey-500 dark:focus:border-grey-500 outline-none", className)} 
-      {...rest} 
+    <>
+      {label && ( 
+        <label className='font-bold dark:text-grey-400'>
+          {label}
+        </label>
+      )}
+      <input 
+        className={twMerge("block p-4 pl-6 text-sm border border-grey-300 rounded-lg bg-grey-50 focus:ring-grey-500 focus:border-grey-900  focus-visible:ring-grey-900 focus-visible:border-grey-900 dark:bg-grey-700 dark:border-grey-600 dark:placeholder-grey-400 dark:focus:ring-grey-500 dark:focus:border-grey-500 outline-none", className)} 
+        {...rest} 
       />
+    </>
   )
 }
