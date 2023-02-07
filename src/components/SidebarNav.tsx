@@ -6,14 +6,13 @@ import {
   FaSun,
 } from 'react-icons/fa';
 
-export interface SidebarNav {}
 
-export const SidebarNav: React.FC<SidebarNav> = (props) => {
+export const SidebarNav: React.FC = () => {
   const ThemeIcon = () => {
     const [darkTheme, setDarkTheme] = useDarkMode();
     const handleMode = () => { setDarkTheme(!darkTheme) };
     return (
-      <span onClick={handleMode}>
+      <span onClick={handleMode} className='fixed bottom-4'>
         {darkTheme ? (
           <FaSun size='24' className='top-navigation-icon' />
         ) : (
