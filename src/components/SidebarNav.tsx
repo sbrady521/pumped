@@ -1,46 +1,60 @@
 import Link from 'next/link'
 import React from 'react'
-import useDarkMode from '../hooks/useDarkMode'
 import {
   FaMoon,
   FaSun,
+  FaHome,
+  FaWeightHanging,
+  FaCog
 } from 'react-icons/fa';
 
+          <button data-set-theme="dark" data-act-class="ACTIVECLASS"><FaMoon size='24'/> </button>
+
+const themeOpts = [
+  {label: 'Light', value: 'light'},
+  {label: 'Dark', value: 'dark'},
+]
 
 export const SidebarNav: React.FC = () => {
-  const ThemeIcon = () => {
-    const [darkTheme, setDarkTheme] = useDarkMode();
-    const handleMode = () => { setDarkTheme(!darkTheme) };
-    return (
-      <span onClick={handleMode} className='fixed bottom-4'>
-        {darkTheme ? (
-          <FaSun size='24' className='top-navigation-icon' />
-        ) : (
-          <FaMoon size='24' className='top-navigation-icon' />
-        )}
-      </span>
-    );
-  };
-
-  const NavItem = (props: React.ComponentProps<typeof Link>) => {
-    return (
-      <Link {...props} className='w-full p-4 rounded-xl hover:bg-grey-300 dark:hover:bg-grey-700 text-lg font-bold mb-4' />
-    )
-  }
 
   return (
-    <nav className='h-screen w-64 flex flex-col items-center 
-      text-justify shadow-lg p-2
+    <nav className='h-screen w-80 flex flex-col items-center 
+      text-justify p-2 bg-base-200
       '
     >
-      <NavItem href='/'>
-        Home
-      </NavItem>
-      <NavItem href='/workouts'>
-        Workouts
-      </NavItem>
-      <button data-set-theme="dark" data-act-class="ACTIVECLASS"><FaMoon size='24'/> </button>
-      <button data-set-theme="light" data-act-class="ACTIVECLASS"><FaSun size='24'/> </button>
+      <input type="checkbox" id="homepage-settings-modal" className="modal-toggle" />
+      <label htmlFor="homepage-settings-modal" className="modal modal-bottom sm:modal-middle cursor-pointer">
+        <label className="modal-box relative h-3/6 bg-base-100" htmlFor="">
+          <div className="dropdown">
+            <label tabIndex={0} className="btn m-1">Click</label>
+            <ul tabIndex={0} className="dropdown-content menu bg-base-200 p-2 shadow rounded-box w-52">
+              {themeOpts.map(opt => (
+                <li data-set-theme={opt.value} data-act-class='ACTIVECLASS' key={opt.value}><a>{opt.label}</a></li>
+              ))}
+            </ul>
+          </div>
+        </label>
+      </label>
+      <ul className="menu rounded-box p-2 gap-2 h-full w-full font-bold text-md">
+        <li>
+          <Link href='/'>
+            <FaHome size="20" />
+            Home
+          </Link >
+        </li>
+        <li>
+          <Link href='/workouts'>
+            <FaWeightHanging size="20" />
+            Workouts
+          </Link >
+        </li>
+        <li>
+          <label htmlFor="homepage-settings-modal" className="flex items-center gap-3">
+            <FaCog size="20" />
+            Settings
+          </label>
+        </li>
+      </ul>
     </nav>
   )
 }
