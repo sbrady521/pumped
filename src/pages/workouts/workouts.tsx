@@ -19,21 +19,20 @@ const WorkoutPage: NextPage = () => {
 
   return (
     <div className='w-5/6 mx-auto my-16'>
-      <Modal 
-        isOpen={showCreate} 
-        onRequestClose={(): void => setShowCreate(false)}
-        ariaHideApp={false}
-        className='w-3/6 h-3/6 p-0'
-      >
-        <ExerciseForm />
-      </Modal>
+      <input type="checkbox" id="exercise-form-modal" className="modal-toggle" />
+      <label htmlFor="exercise-form-modal" className="modal modal-bottom sm:modal-middle cursor-pointer">
+        <label className="modal-box relative" htmlFor="">
+          <ExerciseForm />
+        </label>
+      </label>
       <h1 className='font-bold text-3xl mb-8'>Exercise Tracker</h1>
       <div className='flex mb-4 justify-between'>
         <Searchbar className='w-3/6' value={search} onChange={(e) => setSearch(e.currentTarget.value)} />
-        <Button className='flex items-center gap-3' onClick={(): void => setShowCreate(true)}>
+
+        <label htmlFor="exercise-form-modal" className="btn flex items-center gap-3">
           <FaPlusCircle />
           Create
-        </Button>
+        </label>
       </div>
       {filteredExercies?.map(workout => (
         <ExerciseCard  

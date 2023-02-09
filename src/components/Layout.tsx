@@ -9,7 +9,7 @@ export interface LayoutProps {
 export const Layout: React.FC<LayoutProps> = (props) => {
   const { children } = props
   return (
-    <div className='flex dark:bg-grey-700 dark:text-grey-400 text-grey-800 ' >
+    <div data-theme="ACTIVETHEME" className='flex bg-base-100' >
       <Head>
         <title>Pumped App</title>
         <meta name="description" content="Get pumped" />

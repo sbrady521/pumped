@@ -30,7 +30,7 @@ export const SidebarNav: React.FC = () => {
 
   return (
     <nav className='h-screen w-64 flex flex-col items-center 
-      text-justify bg-grey-100 dark:bg-grey-900 shadow-lg p-2
+      text-justify shadow-lg p-2
       '
     >
       <NavItem href='/'>
@@ -39,7 +39,8 @@ export const SidebarNav: React.FC = () => {
       <NavItem href='/workouts'>
         Workouts
       </NavItem>
-      <ThemeIcon />
+      <button data-set-theme="dark" data-act-class="ACTIVECLASS"><FaMoon size='24'/> </button>
+      <button data-set-theme="light" data-act-class="ACTIVECLASS"><FaSun size='24'/> </button>
     </nav>
   )
 }
