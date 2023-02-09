@@ -10,8 +10,8 @@ export interface ExerciseCardProps {
 const ExerciseCard: React.FC<ExerciseCardProps> = (props) => {
   const { name, sets } = props
   return (
-    <div className='rounded-md shadow-md border-1 border-grey-400 p-4 flex justify-between dark:bg-grey-600'>
-      <h3 className='font-bold'>
+    <div className='rounded-md shadow-md border-1 bg-base-100 p-4 flex justify-between items-center hover:bg-base-100-focus cursor-pointer'>
+      <h3 className='font-bold text-lg'>
         {name}
       </h3>
       <div>

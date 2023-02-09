@@ -13,6 +13,10 @@ import {
 const themeOpts = [
   {label: 'Light', value: 'light'},
   {label: 'Dark', value: 'dark'},
+  {label: 'Cupcake', value: 'cupcake'},
+  {label: 'Emerald', value: 'emerald'},
+  {label: 'Forest', value: 'forest'},
+  {label: 'Dracula', value: 'dracula'},
 ]
 
 export const SidebarNav: React.FC = () => {

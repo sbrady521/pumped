@@ -21,7 +21,7 @@ const WorkoutPage: NextPage = () => {
     <div className='w-5/6 mx-auto my-16'>
       <input type="checkbox" id="exercise-form-modal" className="modal-toggle" />
       <label htmlFor="exercise-form-modal" className="modal modal-bottom sm:modal-middle cursor-pointer">
-        <label className="modal-box relative" htmlFor="">
+        <label className="modal-box relative bg-base-100" htmlFor="">
           <ExerciseForm />
         </label>
       </label>
