@@ -10,11 +10,11 @@ export const Searchbar: React.FC<React.HTMLProps<HTMLInputElement>> = (props) =>
       <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none" >
         <FaSearch />
       </div>
-      <Input 
+      <input 
         type="search" 
         id="default-search" 
         placeholder='search exercises...'
-        className={twMerge('pl-10', className)}
+        className={twMerge('input input-bordered pl-10', className)}
         {...rest}
       />
     </div>

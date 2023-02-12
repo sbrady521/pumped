@@ -7,16 +7,17 @@ import {
   FaWeightHanging,
   FaCog
 } from 'react-icons/fa';
+import { Modal, ModalTrigger } from './Modal';
 
           <button data-set-theme="dark" data-act-class="ACTIVECLASS"><FaMoon size='24'/> </button>
 
 const themeOpts = [
-  {label: 'Light', value: 'light'},
+  {label: 'Light', value: 'emerald'},
   {label: 'Dark', value: 'dark'},
-  {label: 'Cupcake', value: 'cupcake'},
-  {label: 'Emerald', value: 'emerald'},
-  {label: 'Forest', value: 'forest'},
-  {label: 'Dracula', value: 'dracula'},
+  // {label: 'Cupcake', value: 'cupcake'},
+  // {label: 'Emerald', value: 'emerald'},
+  // {label: 'Forest', value: 'forest'},
+  // {label: 'Dracula', value: 'dracula'},
 ]
 
 export const SidebarNav: React.FC = () => {
@@ -26,19 +27,16 @@ export const SidebarNav: React.FC = () => {
       text-justify p-2 bg-base-200
       '
     >
-      <input type="checkbox" id="homepage-settings-modal" className="modal-toggle" />
-      <label htmlFor="homepage-settings-modal" className="modal modal-bottom sm:modal-middle cursor-pointer">
-        <label className="modal-box relative h-3/6 bg-base-100" htmlFor="">
-          <div className="dropdown">
-            <label tabIndex={0} className="btn m-1">Click</label>
-            <ul tabIndex={0} className="dropdown-content menu bg-base-200 p-2 shadow rounded-box w-52">
-              {themeOpts.map(opt => (
-                <li data-set-theme={opt.value} data-act-class='ACTIVECLASS' key={opt.value}><a>{opt.label}</a></li>
-              ))}
-            </ul>
-          </div>
-        </label>
-      </label>
+      <Modal id="homepage-settings-modal">
+        <div className="dropdown">
+          <label tabIndex={0} className="btn m-1">Theme</label>
+          <ul tabIndex={0} className="dropdown-content menu bg-base-200 p-2 shadow rounded-box w-52">
+            {themeOpts.map(opt => (
+              <li data-set-theme={opt.value} data-act-class='ACTIVECLASS' key={opt.value}><a>{opt.label}</a></li>
+            ))}
+          </ul>
+        </div>
+      </Modal>
       <ul className="menu rounded-box p-2 gap-2 h-full w-full font-bold text-md">
         <li>
           <Link href='/'>
@@ -53,10 +51,10 @@ export const SidebarNav: React.FC = () => {
           </Link >
         </li>
         <li>
-          <label htmlFor="homepage-settings-modal" className="flex items-center gap-3">
+          <ModalTrigger id="homepage-settings-modal">
             <FaCog size="20" />
             Settings
-          </label>
+          </ModalTrigger>
         </li>
       </ul>
     </nav>

@@ -1,12 +1,11 @@
 import type { NextPage } from 'next'
 import React, { useState } from 'react'
-import Button from '../../components/Button'
 import ExerciseCard from '../../components/ExerciseCard'
 import { Searchbar } from '../../components/Searchbar'
 import { api } from '../../utils/api'
 import { FaPlusCircle } from 'react-icons/fa';
-import { Modal } from '../../components/Modal'
 import ExerciseForm from '../../components/ExerciseForm'
+import { ModalTrigger, Modal } from '../../components/Modal'
 
 const WorkoutPage: NextPage = () => {
 
@@ -19,20 +18,18 @@ const WorkoutPage: NextPage = () => {
 
   return (
     <div className='w-5/6 mx-auto my-16'>
-      <input type="checkbox" id="exercise-form-modal" className="modal-toggle" />
-      <label htmlFor="exercise-form-modal" className="modal modal-bottom sm:modal-middle cursor-pointer">
-        <label className="modal-box relative bg-base-100" htmlFor="">
-          <ExerciseForm />
-        </label>
-      </label>
+      <Modal id="exercise-form-modal">
+        <ExerciseForm />
+      </Modal>
       <h1 className='font-bold text-3xl mb-8'>Exercise Tracker</h1>
       <div className='flex mb-4 justify-between'>
         <Searchbar className='w-3/6' value={search} onChange={(e) => setSearch(e.currentTarget.value)} />
-
-        <label htmlFor="exercise-form-modal" className="btn flex items-center gap-3">
-          <FaPlusCircle />
-          Create
-        </label>
+        <ModalTrigger id="exercise-form-modal" className="btn flex gap-2">
+          <>
+            <FaPlusCircle />
+            Create
+          </>
+        </ModalTrigger>
       </div>
       {filteredExercies?.map(workout => (
         <ExerciseCard  
