@@ -4,7 +4,7 @@ import ExerciseCard from '../../components/ExerciseCard'
 import { Searchbar } from '../../components/Searchbar'
 import { api } from '../../utils/api'
 import { FaPlusCircle } from 'react-icons/fa';
-import ExerciseForm from '../../components/ExerciseForm'
+import { ExerciseForm } from '../../components/ExerciseForm'
 import { ModalTrigger, Modal } from '../../components/Modal'
 
 const WorkoutPage: NextPage = () => {
@@ -12,7 +12,6 @@ const WorkoutPage: NextPage = () => {
   const { data } = api.exercises.getAll.useQuery()
 
   const [search, setSearch] = useState<string>('')
-  const [showCreate, setShowCreate] = useState<boolean>(false)
 
   const filteredExercies = data?.filter(ex => search === '' || ex.name.toLowerCase().includes(search.toLowerCase()))
 

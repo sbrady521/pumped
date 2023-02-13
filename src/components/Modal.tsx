@@ -13,7 +13,7 @@ export const Modal: React.FC<ModalProps> = (props) => {
     <>
       <input type="checkbox" id={id} className="modal-toggle" />
       <label htmlFor={id} className="modal modal-bottom sm:modal-middle cursor-pointer">
-        <label className="modal-box relative h-3/6 bg-base-100" htmlFor={id}>
+        <label className="modal-box relative h-3/6 bg-base-100" htmlFor="">
           {children}
         </label>
       </label>
