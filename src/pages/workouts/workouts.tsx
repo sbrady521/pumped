@@ -37,13 +37,15 @@ const WorkoutPage: NextPage = () => {
           </>
         </ModalTrigger>
       </div>
-      {filteredExercies?.map(workout => (
-        <ExerciseCard  
-          key={workout.id} 
-          name={workout.name}
-          sets={workout.sets}
-        />
-      ))}
+      <div className='flex flex-col gap-4'>
+        {filteredExercies?.map(workout => (
+          <ExerciseCard  
+            key={workout.id} 
+            name={workout.name}
+            sets={workout.sets}
+          />
+        ))}
+      </div>
     </div>
   )
 }

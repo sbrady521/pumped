@@ -25,7 +25,7 @@ export const Set: React.FC<SetProps> = (props) => {
       <input 
         className='input input-bordered w-2/6' 
         placeholder='Weight' 
-        value={weight} 
+        value={weight ?? ''} 
         autoFocus
         onChange={(e) => onChangeSet({ ...set, weight: parseInt(e.currentTarget.value || '0') })}
       />

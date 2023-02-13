@@ -14,7 +14,7 @@ const ExerciseCard: React.FC<ExerciseCardProps> = (props) => {
       <h3 className='font-bold text-lg'>
         {name}
       </h3>
-      <div>
+      <div className='flex items-center gap-4'>
         {sets.map(set => (
           <SetChip 
             key={set.id}
