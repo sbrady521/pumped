@@ -1,6 +1,9 @@
-import { Set } from '@prisma/client'
+import type { Set as ISet } from '@prisma/client'
 import React, { useState } from 'react'
+import type { EdittableSet} from './Set';
+import { FaMinus, FaPlusCircle, FaTimes } from 'react-icons/fa';
 import { Set } from './Set'
+import { uuid } from 'uuidv4'
 
 export interface WorkoutDescProps {
   name: string
@@ -51,27 +54,54 @@ export const WorkoutDesc: React.FC<WorkoutDescProps> = (props) => {
 }
 
 export interface WorkoutSetsProps {
+  sets: EdittableSet[]
+  onChangeSets: (sets: EdittableSet[]) => void
+  onNewSet: () => void
   onNext: () => void
 }
 
 export const WorkoutSets: React.FC<WorkoutSetsProps> = (props) => {
 
-  const { onNext } = props
-  
-  const [sets, setSets] = useState<Set[]>([ {weightMetric: 'kg'} ])
+  const { sets, onChangeSets, onNewSet, onNext } = props
+
+  const onChangeSet = (changeIdx: number, newSet: ISet) => {
+    const newSets = sets.map((set, setIdx) => setIdx === changeIdx ? newSet : set)
+    onChangeSets(newSets)
+  }
 
   return (
     <>
       <h1 className='text-2xl font-bold mb-8'>
         Workout sets
       </h1>
-      <Set />
+      <div className='overflow-x-auto pr-4 pl-1'>
+        {sets.map((set, idx) => (
+          <div key={set.id} className='flex items-center gap-4'>
+            <Set 
+              set={set} 
+              onChangeSet={(set: ISet) => onChangeSet(idx, set)} 
+            />
+            <button 
+              className='btn btn-circle btn-xs'
+              onClick={(): void => onChangeSets(sets.filter((_, i) => i !== idx))}
+            >
+              <FaMinus size='8'/>
+            </button>
+          </div>
+        ))}
+      </div>
+      <button 
+        className='btn btn-outline w-full mt-4'
+        onClick={onNewSet}
+      >
+        <FaPlusCircle />
+      </button>
       <div className='fixed bottom-16 right-16'>
         <label className='btn btn-ghost' htmlFor='exercise-form-modal' >
           Cancel
         </label>
         <button className='btn btn-primary' onClick={onNext} >
-          Add sets
+          Create exercise
         </button>
       </div>
     </>
@@ -83,6 +113,17 @@ export const ExerciseForm: React.FC<ExerciseFormProps> = (props) => {
   const [name, setName] = useState('')
   const [desc, setDesc] = useState('')
   const [page, setPage] = useState<'workout-weights' | 'workout-sets'>('workout-weights')
+  const [exerciseId] = useState(uuid())
+
+  const newSet = () => ({
+    id: uuid(),
+    exerciseId,
+    weightMetric: 'kg' ,
+    reps: 10
+  })
+
+  const [sets, setSets] = useState<EdittableSet[]>([newSet()])
+
 
   return (
     <div className='p-8 h-full w-full'>
@@ -97,6 +138,9 @@ export const ExerciseForm: React.FC<ExerciseFormProps> = (props) => {
       )}
       {page === 'workout-sets' && (
          <WorkoutSets
+            sets={sets}
+            onChangeSets={setSets}
+            onNewSet={(): void => setSets([...sets, newSet()])}
             onNext={(): void => setPage('workout-sets')}
           />
       )}
