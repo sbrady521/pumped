@@ -1,16 +1,30 @@
 import type { NextPage } from 'next'
+import type { Exercise, Set } from '@prisma/client';
 import React, { useState } from 'react'
+import { createProxySSGHelpers } from '@trpc/react-query/ssg';
+import superjson from 'superjson'
 import ExerciseCard from '../../components/ExerciseCard'
 import { Searchbar } from '../../components/Searchbar'
 import { api } from '../../utils/api'
 import { FaPlusCircle } from 'react-icons/fa';
 import { ExerciseForm } from '../../components/ExerciseForm'
 import { ModalTrigger, Modal } from '../../components/Modal'
+import { appRouter } from '../../server/api/root';
+import { createTRPCContext } from '../../server/api/trpc';
 
 const WorkoutPage: NextPage = () => {
 
+  const trpcUtils = api.useContext()
+
   const { data } = api.exercises.getAll.useQuery()
-  const upsertExercise = api.exercises.upsert.useMutation()
+  const upsertExercise = api.exercises.upsert.useMutation({
+    onMutate: async (newExercise) => {
+      await trpcUtils.exercises.getAll.cancel()
+      const previous = trpcUtils.exercises.getAll.getData() ?? []
+      const newData = [...previous, newExercise] as (Exercise & { sets: Set[] })[]
+      trpcUtils.exercises.getAll.setData(undefined, newData)
+    }
+  })
 
   const [search, setSearch] = useState<string>('')
 
@@ -21,9 +35,8 @@ const WorkoutPage: NextPage = () => {
       <Modal id="exercise-form-modal">
         <ExerciseForm 
         
-          onSubmit={(exercise, sets) => {
-            console.log({exercise, sets})
-            upsertExercise.mutate({exercise, sets})
+          onSubmit={(exercise) => {
+            upsertExercise.mutate(exercise)
           }}
         />
       </Modal>
@@ -51,3 +64,18 @@ const WorkoutPage: NextPage = () => {
 }
 
 export default WorkoutPage
+
+export async function getServerSideProps() {
+  const ssg = createProxySSGHelpers({
+    router: appRouter,
+    // @ts-expect-error trpc context really wants params
+    ctx: await createTRPCContext(),
+    transformer: superjson,
+  });
+  await ssg.exercises.getAll.prefetch()
+  return {
+    props: {
+      trpcState: ssg.dehydrate()
+    },
+  };
+}

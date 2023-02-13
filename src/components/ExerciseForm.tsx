@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import type { EdittableSet} from './Set';
 import { FaMinus, FaPlusCircle, FaTimes } from 'react-icons/fa';
 import { Set } from './Set'
-import { uuid } from 'uuidv4'
+import { v4 as uuid } from 'uuid'
 
 export interface WorkoutDescProps {
   name: string
@@ -100,16 +100,16 @@ export const WorkoutSets: React.FC<WorkoutSetsProps> = (props) => {
         <label className='btn btn-ghost' htmlFor='exercise-form-modal' >
           Cancel
         </label>
-        <button className='btn btn-primary' onClick={onNext} >
+        <label className='btn btn-primary' onClick={onNext} htmlFor='exercise-form-modal' >
           Create exercise
-        </button>
+        </label>
       </div>
     </>
   )
 }
 
 export interface ExerciseFormProps {
-  onSubmit: (exercise: Exercise, sets: ISet[]) => void
+  onSubmit: (exercise: Exercise & { sets: ISet[] }) => void
 }
 export const ExerciseForm: React.FC<ExerciseFormProps> = (props) => {
   const { onSubmit } = props
@@ -144,7 +144,7 @@ export const ExerciseForm: React.FC<ExerciseFormProps> = (props) => {
             onChangeSets={setSets}
             onNewSet={(): void => setSets([...sets, newSet()])}
             onNext={(): void => {
-              onSubmit({ name, id: exerciseId, description: desc }, sets as ISet[])
+              onSubmit({ name, id: exerciseId, description: desc, sets: sets as ISet[] })
             }}
           />
       )}
