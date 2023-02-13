@@ -10,6 +10,7 @@ import { ModalTrigger, Modal } from '../../components/Modal'
 const WorkoutPage: NextPage = () => {
 
   const { data } = api.exercises.getAll.useQuery()
+  const upsertExercise = api.exercises.upsert.useMutation()
 
   const [search, setSearch] = useState<string>('')
 
@@ -18,7 +19,13 @@ const WorkoutPage: NextPage = () => {
   return (
     <div className='w-5/6 mx-auto my-16'>
       <Modal id="exercise-form-modal">
-        <ExerciseForm />
+        <ExerciseForm 
+        
+          onSubmit={(exercise, sets) => {
+            console.log({exercise, sets})
+            upsertExercise.mutate({exercise, sets})
+          }}
+        />
       </Modal>
       <h1 className='font-bold text-3xl mb-8'>Exercise Tracker</h1>
       <div className='flex mb-4 justify-between'>

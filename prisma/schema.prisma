@@ -77,5 +77,6 @@ model Set {
 model Exercise {
   id   String @id @default(cuid())
   name String
+  description String @default("")
   sets Set[]
 }

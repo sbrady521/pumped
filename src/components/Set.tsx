@@ -3,7 +3,7 @@ import React from 'react'
 import { FaTimes } from 'react-icons/fa'
 import { Dropdown } from './Dropdown'
 
-export interface EdittableSet extends Omit<ISet, 'weight'> {
+export interface EdittableSet extends Omit<ISet, 'weight' | 'exerciseId'> {
   weight?: number
 }
 
@@ -30,7 +30,7 @@ export const Set: React.FC<SetProps> = (props) => {
         onChange={(e) => onChangeSet({ ...set, weight: parseInt(e.currentTarget.value || '0') })}
       />
       <Dropdown
-        label={set.weightMetric}
+        label={weightMetric}
         options={[{ value: 'kg', label: 'KG' }, { value: 'lb', label: 'LB' }]} 
         onSelect={(weightMetric: string) => onChangeSet({ weight: 0, ...set, weightMetric })}
       />
