@@ -27,14 +27,16 @@ const WorkoutPage: NextPage = () => {
   })
 
   const [search, setSearch] = useState<string>('')
+  const [isOpen, setIsOpen] = useState<boolean>(false)
+  const [edittingExercise, setEdittingExercise] = useState<string | null>(null)
 
   const filteredExercies = data?.filter(ex => search === '' || ex.name.toLowerCase().includes(search.toLowerCase()))
 
   return (
     <div className='w-5/6 mx-auto my-16'>
-      <Modal id="exercise-form-modal">
+      <Modal id="exercise-form-modal" onClose={() => setIsOpen(false)}>
         <ExerciseForm 
-        
+          isOpen={isOpen}
           onSubmit={(exercise) => {
             upsertExercise.mutate(exercise)
           }}
@@ -43,7 +45,11 @@ const WorkoutPage: NextPage = () => {
       <h1 className='font-bold text-3xl mb-8'>Exercise Tracker</h1>
       <div className='flex mb-4 justify-between'>
         <Searchbar className='w-3/6' value={search} onChange={(e) => setSearch(e.currentTarget.value)} />
-        <ModalTrigger id="exercise-form-modal" className="btn flex gap-2">
+        <ModalTrigger 
+          id="exercise-form-modal" 
+          className="btn flex gap-2" 
+          onClick={() => { setIsOpen(true) }}
+        >
           <>
             <FaPlusCircle />
             Create
@@ -52,7 +58,8 @@ const WorkoutPage: NextPage = () => {
       </div>
       <div className='flex flex-col gap-4'>
         {filteredExercies?.map(workout => (
-          <ExerciseCard  
+          <ExerciseCard
+            onClick={() => setEdittingExercise(workout.id)}
             key={workout.id} 
             name={workout.name}
             sets={workout.sets}

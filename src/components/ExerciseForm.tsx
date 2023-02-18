@@ -1,5 +1,5 @@
 import type { Exercise, Set as ISet } from '@prisma/client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import type { EdittableSet} from './Set';
 import { FaMinus, FaPlusCircle, FaTimes } from 'react-icons/fa';
 import { Set } from './Set'
@@ -109,14 +109,15 @@ export const WorkoutSets: React.FC<WorkoutSetsProps> = (props) => {
 }
 
 export interface ExerciseFormProps {
+  isOpen: boolean
   onSubmit: (exercise: Exercise & { sets: ISet[] }) => void
 }
 export const ExerciseForm: React.FC<ExerciseFormProps> = (props) => {
-  const { onSubmit } = props
+  const { isOpen, onSubmit } = props
   const [name, setName] = useState('')
   const [desc, setDesc] = useState('')
   const [page, setPage] = useState<'workout-weights' | 'workout-sets'>('workout-weights')
-  const [exerciseId] = useState(uuid())
+  const [exerciseId, setExerciseId] = useState(uuid())
 
   const newSet = () => ({
     id: uuid(),
@@ -125,6 +126,15 @@ export const ExerciseForm: React.FC<ExerciseFormProps> = (props) => {
   })
 
   const [sets, setSets] = useState<EdittableSet[]>([newSet()])
+
+  useEffect(() => {
+    setPage('workout-weights')
+    setSets([newSet()])
+    setName('')
+    setDesc('')
+    setExerciseId(uuid())
+  }, [isOpen])
+
 
 
   return (

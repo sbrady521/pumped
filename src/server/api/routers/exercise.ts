@@ -18,11 +18,12 @@ const exercise = z.object({
 
 export const exerciseRouter = createTRPCRouter({
   getAll: protectedProcedure.query(({ ctx }) => {
-    return ctx.prisma.exercise.findMany({
+    const result = ctx.prisma.exercise.findMany({
       include: {
         sets: true
       }
     });
+    return result
   }),
   upsert: protectedProcedure.input(exercise).mutation(({ ctx, input }) => {
     const { name, id, sets } = input

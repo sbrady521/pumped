@@ -5,12 +5,13 @@ import SetChip from './SetChip'
 export interface ExerciseCardProps {
   name: string
   sets: Set[]
+  onClick: () => void
 }
 
 const ExerciseCard: React.FC<ExerciseCardProps> = (props) => {
-  const { name, sets } = props
+  const { name, sets, onClick } = props
   return (
-    <div className='rounded-md shadow-md border-1 bg-base-200 p-4 flex justify-between items-center hover:bg-base-300 cursor-pointer'>
+    <div className='rounded-md shadow-md border-1 bg-base-200 p-4 flex justify-between items-center hover:bg-base-300 cursor-pointer' onClick={onClick}>
       <h3 className='font-bold text-lg'>
         {name}
       </h3>
