@@ -4,6 +4,8 @@ import type { EdittableSet} from './Set';
 import { FaMinus, FaPlusCircle, FaTimes } from 'react-icons/fa';
 import { Set } from './Set'
 import { v4 as uuid } from 'uuid'
+import { NameAndDescription } from './NameAndDescription';
+import { SetManager } from './SetManager';
 
 export interface WorkoutDescProps {
   name: string
@@ -11,38 +13,23 @@ export interface WorkoutDescProps {
   onChangeName: (name: string) => void
   onChangeDesc: (desc: string) => void
   onNext: () => void
+  onCancel: () => void
 }
 
 export const WorkoutDesc: React.FC<WorkoutDescProps> = (props) => {
 
-  const { name, desc, onChangeName, onChangeDesc, onNext } = props
+  const { name, desc, onChangeName, onChangeDesc, onNext, onCancel } = props
 
   return (
     <>
-      <h1 className='text-2xl font-bold mb-8'>
-        Workout description
-      </h1>
-      <div className='mb-4 w-full'>
-      <label className='label'>Name</label>
-        <input 
-          type="text" 
-          placeholder='Exercise name' 
-          className='input input-bordered w-full'
-          value={name} 
-          onChange={e => onChangeName(e.currentTarget.value)} 
-        />
-      </div>
-      <div>
-        <label className='label'>Description (optional)</label>
-        <textarea 
-          placeholder='Any additional notes or description about your exercise' 
-          className='textarea textarea-bordered w-full'
-          value={desc} 
-          onChange={e => onChangeDesc(e.currentTarget.value)} 
-        />
-      </div>
+      <NameAndDescription 
+        name={name}
+        desc={desc}
+        onChangeDesc={onChangeDesc}
+        onChangeName={onChangeName}
+      />
       <div className='fixed bottom-16 right-16'>
-        <label className='btn btn-ghost' htmlFor='exercise-form-modal' >
+        <label className='btn btn-ghost' onClick={onCancel}>
           Cancel
         </label>
         <button className='btn btn-primary' onClick={onNext} >
@@ -58,11 +45,12 @@ export interface WorkoutSetsProps {
   onChangeSets: (sets: EdittableSet[]) => void
   onNewSet: () => void
   onNext: () => void
+  onPrev: () => void
 }
 
 export const WorkoutSets: React.FC<WorkoutSetsProps> = (props) => {
 
-  const { sets, onChangeSets, onNewSet, onNext } = props
+  const { sets, onChangeSets, onNewSet, onNext, onPrev } = props
 
   const onChangeSet = (changeIdx: number, newSet: ISet) => {
     const newSets = sets.map((set, setIdx) => setIdx === changeIdx ? newSet : set)
@@ -74,33 +62,16 @@ export const WorkoutSets: React.FC<WorkoutSetsProps> = (props) => {
       <h1 className='text-2xl font-bold mb-8'>
         Workout sets
       </h1>
-      <div className='overflow-x-auto pr-4 pl-1'>
-        {sets.map((set, idx) => (
-          <div key={set.id} className='flex items-center gap-4'>
-            <Set 
-              set={set} 
-              onChangeSet={(set: ISet) => onChangeSet(idx, set)} 
-            />
-            <button 
-              className='btn btn-circle btn-xs'
-              onClick={(): void => onChangeSets(sets.filter((_, i) => i !== idx))}
-            >
-              <FaMinus size='8'/>
-            </button>
-          </div>
-        ))}
-      </div>
-      <button 
-        className='btn btn-outline w-full mt-4'
-        onClick={onNewSet}
-      >
-        <FaPlusCircle />
-      </button>
+      <SetManager 
+        sets={sets}
+        onChangeSets={onChangeSets}
+        onNewSet={onNewSet}
+      />
       <div className='fixed bottom-16 right-16'>
-        <label className='btn btn-ghost' htmlFor='exercise-form-modal' >
-          Cancel
+        <label className='btn btn-ghost' onClick={onPrev}>
+          Back
         </label>
-        <label className='btn btn-primary' onClick={onNext} htmlFor='exercise-form-modal' >
+        <label className='btn btn-primary' onClick={onNext}>
           Create exercise
         </label>
       </div>
@@ -110,10 +81,11 @@ export const WorkoutSets: React.FC<WorkoutSetsProps> = (props) => {
 
 export interface ExerciseFormProps {
   isOpen: boolean
+  onClose: () => void
   onSubmit: (exercise: Exercise & { sets: ISet[] }) => void
 }
 export const ExerciseForm: React.FC<ExerciseFormProps> = (props) => {
-  const { isOpen, onSubmit } = props
+  const { isOpen, onSubmit, onClose } = props
   const [name, setName] = useState('')
   const [desc, setDesc] = useState('')
   const [page, setPage] = useState<'workout-weights' | 'workout-sets'>('workout-weights')
@@ -146,6 +118,7 @@ export const ExerciseForm: React.FC<ExerciseFormProps> = (props) => {
           onChangeDesc={setDesc}
           onChangeName={setName}
           onNext={(): void => setPage('workout-sets')}
+          onCancel={onClose}
         />
       )}
       {page === 'workout-sets' && (
@@ -156,6 +129,7 @@ export const ExerciseForm: React.FC<ExerciseFormProps> = (props) => {
             onNext={(): void => {
               onSubmit({ name, id: exerciseId, description: desc, sets: sets as ISet[] })
             }}
+            onPrev={() => {setPage('workout-weights')}}
           />
       )}
     </div>

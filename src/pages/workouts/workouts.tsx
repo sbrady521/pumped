@@ -34,9 +34,10 @@ const WorkoutPage: NextPage = () => {
 
   return (
     <div className='w-5/6 mx-auto my-16'>
-      <Modal id="exercise-form-modal" onClose={() => setIsOpen(false)}>
+      <Modal id="exercise-form-modal" onClose={() => setIsOpen(false)} isOpen={isOpen}>
         <ExerciseForm 
           isOpen={isOpen}
+          onClose={() => { setIsOpen(false) }}
           onSubmit={(exercise) => {
             upsertExercise.mutate(exercise)
           }}
@@ -45,16 +46,12 @@ const WorkoutPage: NextPage = () => {
       <h1 className='font-bold text-3xl mb-8'>Exercise Tracker</h1>
       <div className='flex mb-4 justify-between'>
         <Searchbar className='w-3/6' value={search} onChange={(e) => setSearch(e.currentTarget.value)} />
-        <ModalTrigger 
-          id="exercise-form-modal" 
-          className="btn flex gap-2" 
-          onClick={() => { setIsOpen(true) }}
-        >
+        <button onClick={() => { setIsOpen(true) }} className="btn flex gap-2">
           <>
             <FaPlusCircle />
             Create
           </>
-        </ModalTrigger>
+        </button>
       </div>
       <div className='flex flex-col gap-4'>
         {filteredExercies?.map(workout => (

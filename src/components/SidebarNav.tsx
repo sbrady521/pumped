@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import React from 'react'
+import React, { useState } from 'react'
 import {
   FaMoon,
   FaSun,
@@ -22,12 +22,14 @@ const themeOpts = [
 
 export const SidebarNav: React.FC = () => {
 
+  const [isOpen, setIsOpen] = useState<boolean>(false)
+
   return (
     <nav className='h-screen w-80 flex flex-col items-center 
       text-justify p-2 bg-base-200
       '
     >
-      <Modal id="homepage-settings-modal">
+      <Modal id="homepage-settings-modal" isOpen={isOpen} onClose={() => setIsOpen(false)}>
         <div className="dropdown">
           <label tabIndex={0} className="btn m-1">Theme</label>
           <ul tabIndex={0} className="dropdown-content menu bg-base-200 p-2 shadow rounded-box w-52">
@@ -51,10 +53,10 @@ export const SidebarNav: React.FC = () => {
           </Link >
         </li>
         <li>
-          <ModalTrigger id="homepage-settings-modal">
+          <button id="homepage-settings-modal" onClick={() => setIsOpen(true)}>
             <FaCog size="20" />
             Settings
-          </ModalTrigger>
+          </button>
         </li>
       </ul>
     </nav>
