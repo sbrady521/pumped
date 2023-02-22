@@ -40,9 +40,18 @@ const WorkoutPage: NextPage = () => {
     ? data.find(ex => ex.id === edittingExerciseId) ?? null
     : null
 
+  console.log({edittingExerciseId})
+
   return (
     <div className='w-5/6 mx-auto my-16'>
-      <Modal id="exercise-form-modal" onClose={() => setIsOpen(false)} isOpen={isOpen}>
+      <Modal 
+        id="exercise-form-modal" 
+        onClose={() => {
+          setIsOpen(false)
+          setEdittingExerciseId(null)
+        }}
+        isOpen={isOpen}
+      >
         <>
           {(edittingExerciseId === null || !edittingExercise) && (
             <ExerciseForm 
@@ -57,10 +66,14 @@ const WorkoutPage: NextPage = () => {
           {(edittingExerciseId !== null && edittingExercise) && (
             <EditExerciseForm 
               exercise={edittingExercise}
-              onClose={() => {setIsOpen(false)}}
+              onClose={() => {
+                setIsOpen(false)
+                setEdittingExerciseId(null)
+              }}
               onSubmit={(exercise) => {
                 upsertExercise.mutate(exercise)
                 setIsOpen(false)
+                setEdittingExerciseId(null)
               }}
             /> 
           )}
