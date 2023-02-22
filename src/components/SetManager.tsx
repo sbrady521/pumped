@@ -1,5 +1,5 @@
-import type { Set as EdittableSet } from "@prisma/client"
 import { Set } from "./Set"
+import type { EdittableSet } from "./Set"
 import { FaMinus, FaPlusCircle } from 'react-icons/fa';
 
 interface SetManagerProps {
@@ -17,7 +17,7 @@ export const SetManager: React.FC<SetManagerProps> = (props) => {
 
   return (
     <>
-      <div className='overflow-x-auto pr-4 pl-1'>
+      <div className='pr-4 pl-1'>
         {sets.map((set, idx) => (
           <div key={set.id} className='flex items-center gap-4'>
             <Set 

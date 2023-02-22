@@ -26,13 +26,13 @@ export const exerciseRouter = createTRPCRouter({
     return result
   }),
   upsert: protectedProcedure.input(exercise).mutation(({ ctx, input }) => {
-    const { name, id, sets } = input
+    const { name, description, id, sets } = input
 
     const setEntries = sets.map(set => ({ create: set, where: { id: set.id } }))
 
     return ctx.prisma.exercise.upsert({
-      create: { name, sets: { connectOrCreate: setEntries } },
-      update: { name, sets: { connectOrCreate: setEntries } },
+      create: { name, description, sets: { connectOrCreate: setEntries } },
+      update: { name, description, sets: { connectOrCreate: setEntries } },
       where: {
         id
       }

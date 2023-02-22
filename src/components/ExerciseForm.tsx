@@ -1,8 +1,6 @@
 import type { Exercise, Set as ISet } from '@prisma/client'
 import React, { useEffect, useState } from 'react'
 import type { EdittableSet} from './Set';
-import { FaMinus, FaPlusCircle, FaTimes } from 'react-icons/fa';
-import { Set } from './Set'
 import { v4 as uuid } from 'uuid'
 import { NameAndDescription } from './NameAndDescription';
 import { SetManager } from './SetManager';

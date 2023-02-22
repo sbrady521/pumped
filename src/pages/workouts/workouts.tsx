@@ -8,9 +8,10 @@ import { Searchbar } from '../../components/Searchbar'
 import { api } from '../../utils/api'
 import { FaPlusCircle } from 'react-icons/fa';
 import { ExerciseForm } from '../../components/ExerciseForm'
-import { ModalTrigger, Modal } from '../../components/Modal'
+import { Modal } from '../../components/Modal'
 import { appRouter } from '../../server/api/root';
 import { createTRPCContext } from '../../server/api/trpc';
+import { EditExerciseForm } from '../../components/EditExerciseForm';
 
 const WorkoutPage: NextPage = () => {
 
@@ -21,27 +22,49 @@ const WorkoutPage: NextPage = () => {
     onMutate: async (newExercise) => {
       await trpcUtils.exercises.getAll.cancel()
       const previous = trpcUtils.exercises.getAll.getData() ?? []
-      const newData = [...previous, newExercise] as (Exercise & { sets: Set[] })[]
+
+      const newData = (previous.findIndex(ex => ex.id === newExercise.id) !== -1)
+         ? previous.map(ex => ex.id === newExercise.id ? newExercise : ex) as (Exercise & { sets: Set[] })[]
+         : [...previous, newExercise] as (Exercise & { sets: Set[] })[]
+
       trpcUtils.exercises.getAll.setData(undefined, newData)
     }
   })
 
   const [search, setSearch] = useState<string>('')
   const [isOpen, setIsOpen] = useState<boolean>(false)
-  const [edittingExercise, setEdittingExercise] = useState<string | null>(null)
+  const [edittingExerciseId, setEdittingExerciseId] = useState<string | null>(null)
 
   const filteredExercies = data?.filter(ex => search === '' || ex.name.toLowerCase().includes(search.toLowerCase()))
+  const edittingExercise = (edittingExerciseId && data)
+    ? data.find(ex => ex.id === edittingExerciseId) ?? null
+    : null
 
   return (
     <div className='w-5/6 mx-auto my-16'>
       <Modal id="exercise-form-modal" onClose={() => setIsOpen(false)} isOpen={isOpen}>
-        <ExerciseForm 
-          isOpen={isOpen}
-          onClose={() => { setIsOpen(false) }}
-          onSubmit={(exercise) => {
-            upsertExercise.mutate(exercise)
-          }}
-        />
+        <>
+          {(edittingExerciseId === null || !edittingExercise) && (
+            <ExerciseForm 
+                isOpen={isOpen}
+                onClose={() => { setIsOpen(false) }}
+                onSubmit={(exercise) => {
+                  upsertExercise.mutate(exercise)
+                  setIsOpen(false)
+                }}
+              />
+          )}
+          {(edittingExerciseId !== null && edittingExercise) && (
+            <EditExerciseForm 
+              exercise={edittingExercise}
+              onClose={() => {setIsOpen(false)}}
+              onSubmit={(exercise) => {
+                upsertExercise.mutate(exercise)
+                setIsOpen(false)
+              }}
+            /> 
+          )}
+        </>
       </Modal>
       <h1 className='font-bold text-3xl mb-8'>Exercise Tracker</h1>
       <div className='flex mb-4 justify-between'>
@@ -56,7 +79,10 @@ const WorkoutPage: NextPage = () => {
       <div className='flex flex-col gap-4'>
         {filteredExercies?.map(workout => (
           <ExerciseCard
-            onClick={() => setEdittingExercise(workout.id)}
+            onClick={() => { 
+              setEdittingExerciseId(workout.id)
+              setIsOpen(true)
+            }}
             key={workout.id} 
             name={workout.name}
             sets={workout.sets}
