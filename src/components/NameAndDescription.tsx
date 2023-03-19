@@ -9,7 +9,7 @@ export const NameAndDescription: React.FC<NameAndDescriptionProps> = (props) => 
   const { name, desc, onChangeName, onChangeDesc } = props
   return (
     <>
-      <h1>
+      <h1 className="text-2xl font-bold mb-4">
         Workout description
       </h1>
       <div className='mb-4 w-full'>

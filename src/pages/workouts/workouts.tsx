@@ -40,8 +40,6 @@ const WorkoutPage: NextPage = () => {
     ? data.find(ex => ex.id === edittingExerciseId) ?? null
     : null
 
-  console.log({edittingExerciseId})
-
   return (
     <div className='w-5/6 mx-auto my-16'>
       <Modal 

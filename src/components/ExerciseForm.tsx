@@ -110,16 +110,19 @@ export const ExerciseForm: React.FC<ExerciseFormProps> = (props) => {
   return (
     <div className='p-8 h-full w-full'>
       {page === 'workout-weights' && (
-         <WorkoutDesc 
-          name={name} 
-          desc={desc}
-          onChangeDesc={setDesc}
-          onChangeName={setName}
-          onNext={(): void => setPage('workout-sets')}
-          onCancel={onClose}
-        />
+        <div className='mb-24'>
+           <WorkoutDesc 
+            name={name} 
+            desc={desc}
+            onChangeDesc={setDesc}
+            onChangeName={setName}
+            onNext={(): void => setPage('workout-sets')}
+            onCancel={onClose}
+          />
+        </div>
       )}
       {page === 'workout-sets' && (
+        <div className='mb-24'>
          <WorkoutSets
             sets={sets}
             onChangeSets={setSets}
@@ -129,6 +132,7 @@ export const ExerciseForm: React.FC<ExerciseFormProps> = (props) => {
             }}
             onPrev={() => {setPage('workout-weights')}}
           />
+        </div>
       )}
     </div>
   )

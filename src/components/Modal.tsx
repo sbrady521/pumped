@@ -19,7 +19,7 @@ export const Modal: React.FC<ModalProps> = (props) => {
         onClick={onClose}
       >
         <label 
-          className="modal-box relative h-3/6 bg-base-100" 
+          className="modal-box relative h-fit min-h-3/6 bg-base-100" 
           htmlFor="" 
           onClick={(e) => { 
             e.stopPropagation()

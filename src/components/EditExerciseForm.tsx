@@ -86,11 +86,13 @@ export const EditExerciseForm: React.FC<EditExerciseFormProps> = (props) => {
         />
         <FaEdit className="opacity-0 group-hover:opacity-50 transition-opacity ml-[-20px] " />
       </ div>
-      <SetManager 
-        sets={sets}
-        onChangeSets={setSets}
-        onNewSet={() => setSets([...sets, newSet()])}
-      />
+      <div className='mb-24'>
+        <SetManager 
+          sets={sets}
+          onChangeSets={setSets}
+          onNewSet={() => setSets([...sets, newSet()])}
+        />
+      </div>
       <div className='fixed bottom-16 right-16'>
         <label className='btn btn-ghost' onClick={onClose}>
           Cancel
