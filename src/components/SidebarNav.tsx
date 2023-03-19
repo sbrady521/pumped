@@ -25,7 +25,7 @@ export const SidebarNav: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
 
   return (
-    <nav className='h-screen w-80 flex flex-col items-center 
+    <nav className='h-screen w-64 flex flex-col items-center 
       text-justify p-2 bg-base-200
       '
     >
