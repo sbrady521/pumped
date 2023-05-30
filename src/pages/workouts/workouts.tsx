@@ -6,8 +6,7 @@ import { Searchbar } from '../../components/Searchbar'
 import { api } from '../../utils/api'
 import { FaPlusCircle } from 'react-icons/fa';
 import { ExerciseForm } from '../../components/ExerciseForm'
-import { Modal } from '../../components/Modal'
-import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '../../components/Dialog'
+import { Dialog, DialogContent, DialogTrigger } from '../../components/Dialog'
 import { EditExerciseForm } from '../../components/EditExerciseForm';
 import { Button } from '../../components/Button';
 
@@ -30,7 +29,6 @@ const WorkoutPage: NextPage = () => {
   })
 
   const [search, setSearch] = useState<string>('')
-  const [isOpen, setIsOpen] = useState<boolean>(false)
   const [edittingExerciseId, setEdittingExerciseId] = useState<string | null>(null)
 
   const filteredExercies = data?.filter(ex => search === '' || ex.name.toLowerCase().includes(search.toLowerCase()))
@@ -42,53 +40,49 @@ const WorkoutPage: NextPage = () => {
     <div className='w-5/6 mx-auto my-16'>
       <Dialog >
         <DialogContent>
-        <>
-          {(edittingExerciseId === null || !edittingExercise) && (
-            <ExerciseForm 
-                isOpen={isOpen}
-                onClose={() => { setIsOpen(false) }}
+          <>
+            {(edittingExerciseId === null || !edittingExercise) && (
+              <ExerciseForm 
+                  onSubmit={(exercise) => { upsertExercise.mutate(exercise) }}
+                />
+            )}
+            {(edittingExerciseId !== null && edittingExercise) && (
+              <EditExerciseForm 
+                exercise={edittingExercise}
+                onClose={() => {
+                  setEdittingExerciseId(null)
+                }}
                 onSubmit={(exercise) => {
                   upsertExercise.mutate(exercise)
-                  setIsOpen(false)
+                  setEdittingExerciseId(null)
                 }}
-              />
-          )}
-          {(edittingExerciseId !== null && edittingExercise) && (
-            <EditExerciseForm 
-              exercise={edittingExercise}
-              onClose={() => {
-                setIsOpen(false)
-                setEdittingExerciseId(null)
-              }}
-              onSubmit={(exercise) => {
-                upsertExercise.mutate(exercise)
-                setIsOpen(false)
-                setEdittingExerciseId(null)
-              }}
-            /> 
-          )}
-        </>
+              /> 
+            )}
+          </>
         </DialogContent>
       <div className='flex mb-4 justify-between'>
         <Searchbar className='w-3/6' value={search} onChange={(e) => setSearch(e.currentTarget.value)} />
-        <DialogTrigger> 
-          <Button className="gap-2">
-            <FaPlusCircle />
-            Create
+        <DialogTrigger asChild> 
+          <Button 
+            className="gap-2"
+            onClick={() => { setEdittingExerciseId(null) }}
+          >
+            <>
+              <FaPlusCircle />
+              Create
+            </>
           </Button>
         </DialogTrigger> 
       </div>
       <div className='flex flex-col gap-4'>
         {filteredExercies?.map(workout => (
-          <ExerciseCard
-            onClick={() => { 
-              setEdittingExerciseId(workout.id)
-              setIsOpen(true)
-            }}
-            key={workout.id} 
-            name={workout.name}
-            sets={workout.sets}
-          />
+          <DialogTrigger asChild key={workout.id}>
+            <ExerciseCard
+              onClick={() => { setEdittingExerciseId(workout.id) }}
+              name={workout.name}
+              sets={workout.sets}
+            />
+          </DialogTrigger>
         ))}
       </div>
       </Dialog>
