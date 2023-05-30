@@ -1,17 +1,15 @@
 import type { NextPage } from 'next'
 import type { Exercise, Set } from '@prisma/client';
 import React, { useState } from 'react'
-import { createProxySSGHelpers } from '@trpc/react-query/ssg';
-import superjson from 'superjson'
 import ExerciseCard from '../../components/ExerciseCard'
 import { Searchbar } from '../../components/Searchbar'
 import { api } from '../../utils/api'
 import { FaPlusCircle } from 'react-icons/fa';
 import { ExerciseForm } from '../../components/ExerciseForm'
 import { Modal } from '../../components/Modal'
-import { appRouter } from '../../server/api/root';
-import { createTRPCContext } from '../../server/api/trpc';
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '../../components/Dialog'
 import { EditExerciseForm } from '../../components/EditExerciseForm';
+import { Button } from '../../components/Button';
 
 const WorkoutPage: NextPage = () => {
 
@@ -42,14 +40,8 @@ const WorkoutPage: NextPage = () => {
 
   return (
     <div className='w-5/6 mx-auto my-16'>
-      <Modal 
-        id="exercise-form-modal" 
-        onClose={() => {
-          setIsOpen(false)
-          setEdittingExerciseId(null)
-        }}
-        isOpen={isOpen}
-      >
+      <Dialog >
+        <DialogContent>
         <>
           {(edittingExerciseId === null || !edittingExercise) && (
             <ExerciseForm 
@@ -76,16 +68,15 @@ const WorkoutPage: NextPage = () => {
             /> 
           )}
         </>
-      </Modal>
-      <h1 className='font-bold text-3xl mb-8'>Exercise Tracker</h1>
+        </DialogContent>
       <div className='flex mb-4 justify-between'>
         <Searchbar className='w-3/6' value={search} onChange={(e) => setSearch(e.currentTarget.value)} />
-        <button onClick={() => { setIsOpen(true) }} className="btn flex gap-2">
-          <>
+        <DialogTrigger> 
+          <Button className="gap-2">
             <FaPlusCircle />
             Create
-          </>
-        </button>
+          </Button>
+        </DialogTrigger> 
       </div>
       <div className='flex flex-col gap-4'>
         {filteredExercies?.map(workout => (
@@ -100,23 +91,9 @@ const WorkoutPage: NextPage = () => {
           />
         ))}
       </div>
+      </Dialog>
     </div>
   )
 }
 
 export default WorkoutPage
-
-export async function getServerSideProps() {
-  const ssg = createProxySSGHelpers({
-    router: appRouter,
-    // @ts-expect-error trpc context really wants params
-    ctx: await createTRPCContext(),
-    transformer: superjson,
-  });
-  await ssg.exercises.getAll.prefetch()
-  return {
-    props: {
-      trpcState: ssg.dehydrate()
-    },
-  };
-}
