@@ -27,15 +27,15 @@ export const WorkoutDesc: React.FC<WorkoutDescProps> = (props) => {
         onChangeDesc={onChangeDesc}
         onChangeName={onChangeName}
       />
-      <div className='fixed bottom-16 right-16'>
+      <div className='absolute gap-4 bottom-0 right-0'>
         <DialogPrimitive.Close>
           <Button variant='ghost'>
             Cancel
           </Button>
         </DialogPrimitive.Close>
-        <button className='btn btn-primary' onClick={onNext} >
+        <Button onClick={onNext} >
           Add sets
-        </button>
+        </Button>
       </div>
     </>
   )
@@ -53,11 +53,6 @@ export const WorkoutSets: React.FC<WorkoutSetsProps> = (props) => {
 
   const { sets, onChangeSets, onNewSet, onNext, onPrev } = props
 
-  const onChangeSet = (changeIdx: number, newSet: ISet) => {
-    const newSets = sets.map((set, setIdx) => setIdx === changeIdx ? newSet : set)
-    onChangeSets(newSets)
-  }
-
   return (
     <>
       <h1 className='text-2xl font-bold mb-8'>
@@ -68,13 +63,13 @@ export const WorkoutSets: React.FC<WorkoutSetsProps> = (props) => {
         onChangeSets={onChangeSets}
         onNewSet={onNewSet}
       />
-      <div className='fixed bottom-16 right-16'>
-        <label className='btn btn-ghost' onClick={onPrev}>
+      <div className='absolute bottom-0 right-0'>
+        <Button variant='ghost' onClick={onPrev}>
           Back
-        </label>
-        <label className='btn btn-primary' onClick={onNext}>
+        </Button>
+        <Button onClick={onNext}>
           Create exercise
-        </label>
+        </Button>
       </div>
     </>
   )
@@ -88,7 +83,6 @@ export const ExerciseForm: React.FC<ExerciseFormProps> = (props) => {
   const [name, setName] = useState('')
   const [desc, setDesc] = useState('')
   const [page, setPage] = useState<'workout-weights' | 'workout-sets'>('workout-weights')
-  const [exerciseId, setExerciseId] = useState(uuid())
 
   const newSet = () => ({
     id: uuid(),
@@ -98,18 +92,8 @@ export const ExerciseForm: React.FC<ExerciseFormProps> = (props) => {
 
   const [sets, setSets] = useState<EdittableSet[]>([newSet()])
 
-  // useEffect(() => {
-  //   setPage('workout-weights')
-  //   setSets([newSet()])
-  //   setName('')
-  //   setDesc('')
-  //   setExerciseId(uuid())
-  // }, [isOpen])
-
-
-
   return (
-    <div className='p-8 h-full w-full'>
+    <div className='relative h-full w-full'>
       {page === 'workout-weights' && (
         <div className='mb-24'>
            <WorkoutDesc 
@@ -128,7 +112,7 @@ export const ExerciseForm: React.FC<ExerciseFormProps> = (props) => {
             onChangeSets={setSets}
             onNewSet={(): void => setSets([...sets, newSet()])}
             onNext={(): void => {
-              onSubmit({ name, id: exerciseId, description: desc, sets: sets as ISet[] })
+              onSubmit({ name, id: uuid(), description: desc, sets: sets as ISet[] })
             }}
             onPrev={() => {setPage('workout-weights')}}
           />
