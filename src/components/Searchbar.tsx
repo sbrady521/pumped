@@ -1,5 +1,6 @@
 import React from 'react'
-import { Input, InputProps } from './Input'
+import type { InputProps } from 'components/Input';
+import { Input } from 'components/Input'
 import { FaSearch } from 'react-icons/fa';
 import { twMerge } from 'tailwind-merge'
 

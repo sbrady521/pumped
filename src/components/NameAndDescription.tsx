@@ -1,6 +1,6 @@
-import { Input } from "./Input"
-import { Label } from "./Label"
-import { Textarea } from "./Textarea"
+import { Input } from "components/Input"
+import { Label } from "components/Label"
+import { Textarea } from "components/Textarea"
 
 interface NameAndDescriptionProps {
   name: string

@@ -1,13 +1,13 @@
 import type { Exercise, Set as ISet } from '@prisma/client'
 import * as DialogPrimitive from "@radix-ui/react-dialog"
 import React, { useEffect, useState } from 'react'
-import type { EdittableSet} from './Set';
+import type { EdittableSet} from 'components/Set';
 import { v4 as uuid } from 'uuid'
-import { NameAndDescription } from './NameAndDescription';
-import { SetManager } from './SetManager';
+import { NameAndDescription } from 'components/NameAndDescription';
+import { SetManager } from 'components/SetManager';
 import { FaEdit } from 'react-icons/fa';
-import { Input } from './Input';
-import { Button } from './Button';
+import { Input } from 'components/Input';
+import { Button } from 'components/Button';
 
 export interface WorkoutDescProps {
   name: string

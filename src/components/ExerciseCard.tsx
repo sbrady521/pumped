@@ -1,6 +1,6 @@
 import type { Set } from '@prisma/client'
 import React from 'react'
-import SetChip from './SetChip'
+import SetChip from 'components/SetChip'
 
 export interface ExerciseCardProps {
   name: string

@@ -1,6 +1,6 @@
-import { Button } from "./Button";
-import { Set } from "./Set"
-import type { EdittableSet } from "./Set"
+import { Button } from "components/Button";
+import { Set } from "components/Set"
+import type { EdittableSet } from "components/Set"
 import { FaMinus, FaPlusCircle } from 'react-icons/fa';
 
 interface SetManagerProps {

@@ -1,6 +1,5 @@
 import React from 'react'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './Select'
-import { Button } from './Button'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from 'components/Select'
 
 export interface Option {
   label: string

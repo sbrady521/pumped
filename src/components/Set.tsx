@@ -1,7 +1,6 @@
 import type { Set as ISet } from '@prisma/client'
 import React from 'react'
 import { FaTimes } from 'react-icons/fa'
-import { Dropdown } from './Dropdown'
 import { Input } from './Input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './Select'
 import { cn } from 'utils/tailwind'
