@@ -39,7 +39,7 @@ const WorkoutPage: NextPage = () => {
   return (
     <div className='w-5/6 mx-auto my-16'>
       <Dialog >
-        <DialogContent>
+        <DialogContent className="max-h-full overflow-auto">
           <>
             {(edittingExerciseId === null || !edittingExercise) && (
               <ExerciseForm 

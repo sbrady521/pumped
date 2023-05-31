@@ -5,19 +5,12 @@ import { SessionProvider } from "next-auth/react";
 import { api } from "../utils/api";
 
 import "../styles/globals.css";
-import { useEffect } from "react";
-import { themeChange } from "theme-change";
 import Head from "next/head";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
-  
-  useEffect(() => {
-    themeChange(false)
-  }, [])
-  
   return (
     <SessionProvider session={session}>
     <div data-theme="ACTIVETHEME" className='flex bg-base-100' >

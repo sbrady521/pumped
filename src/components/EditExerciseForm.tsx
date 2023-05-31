@@ -1,10 +1,13 @@
 import type { Exercise, Set as ISet } from '@prisma/client'
+import * as DialogPrimitive from "@radix-ui/react-dialog"
 import React, { useEffect, useState } from 'react'
 import type { EdittableSet} from './Set';
 import { v4 as uuid } from 'uuid'
 import { NameAndDescription } from './NameAndDescription';
 import { SetManager } from './SetManager';
 import { FaEdit } from 'react-icons/fa';
+import { Input } from './Input';
+import { Button } from './Button';
 
 export interface WorkoutDescProps {
   name: string
@@ -65,22 +68,22 @@ export const EditExerciseForm: React.FC<EditExerciseFormProps> = (props) => {
   }, [exercise])
 
   return (
-    <div className='p-8 h-full w-full'>
+    <div className='relative h-full w-full'>
       <div className="flex group items-center">
-        <input 
+        <Input 
           type="text" 
           placeholder="Exercise name" 
-          className="input input-ghost w-full text-2xl font-bold ml-[-14px]"
+          className="w-full text-2xl font-bold ml-[-14px] border-none"
           value={name}
           onChange={e => setName(e.currentTarget.value ?? '')}
         />
         <FaEdit className="opacity-0 group-hover:opacity-50 transition-opacity mt-1 ml-[-20px] " />
       </ div>
-      <div className="flex group items-center mb-8">
-        <input 
+      <div className="flex group items-center mb-4">
+        <Input 
           type="text" 
           placeholder="Exercise description" 
-          className="input input-ghost w-full ml-[-14px]"
+          className="w-full ml-[-14px] border-none"
           value={desc}
           onChange={e => setDesc(e.currentTarget.value ?? '')}
         />
@@ -93,17 +96,17 @@ export const EditExerciseForm: React.FC<EditExerciseFormProps> = (props) => {
           onNewSet={() => setSets([...sets, newSet()])}
         />
       </div>
-      <div className='fixed bottom-16 right-16'>
-        <label className='btn btn-ghost' onClick={onClose}>
-          Cancel
-        </label>
-        <label 
-          className='btn btn-primary' 
-          onClick={() => { 
-            onSubmit({ name, id: exerciseId, description: desc, sets: sets as ISet[] })
-          }}>
+      <div className='absolute gap-4 bottom-0 right-0'>
+        <DialogPrimitive.Close>
+          <Button variant='ghost'>
+            Cancel
+          </Button>
+        </DialogPrimitive.Close>
+        <Button 
+          onClick={() => { onSubmit({ name, id: exerciseId, description: desc, sets: sets as ISet[] }) }}
+        >
           Save
-        </label>
+        </Button>
       </div>
     </div>
   )
