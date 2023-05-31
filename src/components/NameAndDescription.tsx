@@ -1,3 +1,7 @@
+import { Input } from "./Input"
+import { Label } from "./Label"
+import { Textarea } from "./Textarea"
+
 interface NameAndDescriptionProps {
   name: string
   desc: string
@@ -13,20 +17,22 @@ export const NameAndDescription: React.FC<NameAndDescriptionProps> = (props) => 
         Workout description
       </h1>
       <div className='mb-4 w-full'>
-        <label className='label'>Name</label>
-        <input 
-        type="text" 
-        placeholder='Exercise name' 
-        className='input input-bordered w-full'
-        value={name} 
-        onChange={e => onChangeName(e.currentTarget.value)} 
+        <Label htmlFor='name'>Name</Label>
+        <Input 
+          id='name'
+          type="text" 
+          placeholder='Exercise name' 
+          className='w-full'
+          value={name} 
+          onChange={e => onChangeName(e.currentTarget.value)} 
         />
       </div>
       <div>
-        <label className='label'>Description (optional)</label>
-        <textarea 
+        <Label htmlFor='desc'>Description (optional)</Label>
+        <Textarea 
+          id='desc'
           placeholder='Any additional notes or description about your exercise'    
-          className='textarea textarea-bordered w-full'
+          className='w-full'
           value={desc} 
           onChange={e => onChangeDesc(e.currentTarget.value)} 
         />

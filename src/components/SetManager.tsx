@@ -1,3 +1,4 @@
+import { Button } from "./Button";
 import { Set } from "./Set"
 import type { EdittableSet } from "./Set"
 import { FaMinus, FaPlusCircle } from 'react-icons/fa';
@@ -17,28 +18,30 @@ export const SetManager: React.FC<SetManagerProps> = (props) => {
 
   return (
     <>
-      <div className='pr-4 pl-1'>
+      <div className='flex flex-col gap-3'>
         {sets.map((set, idx) => (
-          <div key={set.id} className='flex items-center gap-4'>
+          <div key={set.id} className='flex items-center'>
             <Set 
               set={set} 
+              className="mr-4"
               onChangeSet={(set: EdittableSet) => onChangeSet(idx, set)} 
             />
-            <button 
-              className='btn btn-circle btn-xs'
+            <Button 
+              className="h-6 px-2 rounded-full"
               onClick={(): void => onChangeSets(sets.filter((_, i) => i !== idx))}
             >
               <FaMinus size='8'/>
-            </button>
+            </Button>
           </div>
         ))}
       </div>
-      <button 
-        className='btn btn-outline w-full mt-4'
+      <Button 
+        variant='outline'
+        className='w-full mt-4'
         onClick={onNewSet}
       >
         <FaPlusCircle />
-      </button>
+      </Button>
     </>
   )
 

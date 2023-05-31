@@ -1,26 +1,30 @@
 import React from 'react'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './Select'
+import { Button } from './Button'
 
-export interface Option<T> {
+export interface Option {
   label: string
-  value: T
+  value: string 
 }
 
-export interface DropdownProps<T> {
+export interface DropdownProps {
   label?: string
-  options: Option<T>[]
-  onSelect: (value: T) => void
+  options: Option[]
+  onSelect: (value: string) => void
 }
 
-export function Dropdown<T> (props: DropdownProps<T>): JSX.Element {
+export function Dropdown (props: DropdownProps): JSX.Element {
   const { label, options, onSelect } = props
   return (
-    <div className="dropdown">
-      {label && (<label tabIndex={0} className="btn m-1">{label}</label>)}
-      <ul tabIndex={0} className="dropdown-content menu bg-base-200 p-2 shadow rounded-box w-52">
+    <Select onValueChange={onSelect}>
+      <SelectTrigger>
+        <SelectValue placeholder={label} />
+      </SelectTrigger>
+      <SelectContent>
         {options.map(opt => (
-          <li key={opt.label} onClick={(): void => onSelect(opt.value)}><a>{opt.label}</a></li>
+          <SelectItem key={opt.label} value={opt.value}>{opt.label}</SelectItem>
         ))}
-      </ul>
-    </div>
+      </SelectContent>
+    </Select>
   )
 }
