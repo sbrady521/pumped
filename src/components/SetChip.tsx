@@ -10,7 +10,7 @@ export interface SetChipProps {
 const SetChip: React.FC<SetChipProps> = (props) => {
   const { weight, reps, weightMetric } = props
   return (
-    <Card className='py-2 px-4 w-fit'>
+    <Card className='py-2 px-4 w-fit whitespace-nowrap'>
       <span className='font-bold'>{`${weight}${weightMetric}`}</span>
       <span>{` x ${reps}`}</span>
     </Card>

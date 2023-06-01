@@ -38,6 +38,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
         <Component {...pageProps} />
         <Button 
           variant='ghost'
+          className="absolute top-0 right-0"
           onClick={() => { 
             setTheme(theme === 'light' ? 'dark' : 'light')
           }}
