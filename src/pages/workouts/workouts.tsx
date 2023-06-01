@@ -37,8 +37,7 @@ const WorkoutPage: NextPage = () => {
     ? data.find(ex => ex.id === edittingExerciseId) ?? null
     : null
 
-  // const isMobile = useMediaQuery('(max-width: 640px)')
-  const isMobile = true
+  const isMobile = useMediaQuery('(max-width: 640px)')
 
   const showSearchBar = (isMobile && search !== null) || !isMobile
 
