@@ -2,6 +2,7 @@ import { type NextPage } from "next";
 import { signIn, signOut, useSession } from "next-auth/react";
 
 import { api } from "../utils/api";
+import { useRouter } from "next/router";
 
 const Home: NextPage = () => {
   const hello = api.example.hello.useQuery({ text: "from tRPC" });
@@ -25,11 +26,16 @@ export default Home;
 
 const AuthShowcase: React.FC = () => {
   const { data: sessionData } = useSession();
+  const { push } = useRouter()
 
   const { data: secretMessage } = api.example.getSecretMessage.useQuery(
     undefined, // no input
     { enabled: sessionData?.user !== undefined },
   );
+
+  // eslint-disable-next-line @typescript-eslint/no-floating-promises
+  if (sessionData) push('/workouts')
+
 
   return (
     <div className="flex flex-col items-center justify-center gap-4">
@@ -41,7 +47,6 @@ const AuthShowcase: React.FC = () => {
         className="rounded-full bg-black/70 px-10 py-3 font-semibold text-white no-underline transition hover:bg-black"
         onClick={sessionData ? () => void signOut() : () => void signIn()}
       >
-        {sessionData ? "Sign out" : "Sign in"}
       </button>
     </div>
   );

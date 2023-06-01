@@ -13,7 +13,7 @@ const ExerciseCard: React.FC<ExerciseCardProps> = (props) => {
   const { name, sets, onClick } = props
   return (
     <Card onClick={onClick} className='flex justify-between py-4 px-6 items-center hover:bg-accent cursor-pointer'>
-        <CardHeader className='p-0 mr-4'>
+        <CardHeader className='p-0 mr-8 whitespace-nowrap'>
           <h3 className='font-bold text-lg'>
             {name}
           </h3>
