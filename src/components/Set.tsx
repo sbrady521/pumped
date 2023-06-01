@@ -12,7 +12,7 @@ export interface EdittableSet extends Omit<ISet, 'weight' | 'exerciseId'> {
 export interface SetProps {
   set: EdittableSet
   className?: string
-  onChangeSet: (set: ISet) => void
+  onChangeSet: (set: EdittableSet) => void
 }
 
 export const Set: React.FC<SetProps> = (props) => {
