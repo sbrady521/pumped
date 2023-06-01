@@ -44,11 +44,10 @@ export const WorkoutDesc: React.FC<WorkoutDescProps> = (props) => {
 
 export interface EditExerciseFormProps {
   exercise: Exercise & {sets: ISet[]}
-  onClose: () => void
   onSubmit: (exercise: Exercise & { sets: ISet[] }) => void
 }
 export const EditExerciseForm: React.FC<EditExerciseFormProps> = (props) => {
-  const { exercise, onSubmit, onClose } = props
+  const { exercise, onSubmit } = props
   const [name, setName] = useState(exercise.name)
   const [desc, setDesc] = useState(exercise.description ?? '')
   const [exerciseId, setExerciseId] = useState(exercise.id)
@@ -102,11 +101,13 @@ export const EditExerciseForm: React.FC<EditExerciseFormProps> = (props) => {
             Cancel
           </Button>
         </DialogPrimitive.Close>
-        <Button 
+        <DialogPrimitive.Close
           onClick={() => { onSubmit({ name, id: exerciseId, description: desc, sets: sets as ISet[] }) }}
         >
-          Save
-        </Button>
+          <Button>
+            Save
+          </Button>
+        </DialogPrimitive.Close>
       </div>
     </div>
   )

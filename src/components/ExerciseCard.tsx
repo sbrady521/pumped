@@ -1,6 +1,7 @@
 import type { Set } from '@prisma/client'
 import React from 'react'
 import SetChip from 'components/SetChip'
+import { Card, CardContent, CardHeader } from './Card'
 
 export interface ExerciseCardProps {
   name: string
@@ -11,20 +12,25 @@ export interface ExerciseCardProps {
 const ExerciseCard: React.FC<ExerciseCardProps> = (props) => {
   const { name, sets, onClick } = props
   return (
-    <div className='rounded-md shadow-md border-1 bg-base-200 p-4 flex justify-between items-center hover:bg-base-300 cursor-pointer' onClick={onClick}>
-      <h3 className='font-bold text-lg'>
-        {name}
-      </h3>
-      <div className='flex items-center gap-4'>
-        {sets.map(set => (
-          <SetChip 
-            key={set.id}
-            weight={set.weight} 
-            reps={set.reps} 
-          />
-        ))}
-      </div>
-    </div>
+    <Card onClick={onClick} className='flex justify-between py-4 px-6 items-center hover:bg-accent cursor-pointer'>
+        <CardHeader className='p-0'>
+          <h3 className='font-bold text-lg'>
+            {name}
+          </h3>
+        </CardHeader>
+      <CardContent className='p-0'>
+        <div className='flex items-center gap-4'>
+          {sets.map(set => (
+            <SetChip 
+              weightMetric={set.weightMetric}
+              key={set.id}
+              weight={set.weight} 
+              reps={set.reps} 
+            />
+          ))}
+        </div>
+      </CardContent>
+    </Card>
   )
 }
 

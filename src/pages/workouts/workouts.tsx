@@ -49,9 +49,6 @@ const WorkoutPage: NextPage = () => {
             {(edittingExerciseId !== null && edittingExercise) && (
               <EditExerciseForm 
                 exercise={edittingExercise}
-                onClose={() => {
-                  setEdittingExerciseId(null)
-                }}
                 onSubmit={(exercise) => {
                   upsertExercise.mutate(exercise)
                   setEdittingExerciseId(null)
