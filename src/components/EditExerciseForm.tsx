@@ -5,7 +5,7 @@ import React, { useState } from 'react'
 import type { EdittableSet} from 'components/Set';
 import { v4 as uuid } from 'uuid'
 import { SetManager } from 'components/SetManager';
-import { FaEdit } from 'react-icons/fa';
+import { FaEdit, FaTrashAlt } from 'react-icons/fa';
 import { Input } from 'components/Input';
 import { Button } from 'components/Button';
 import { useRouter } from 'next/navigation';
@@ -22,9 +22,10 @@ export interface WorkoutDescriptionProps {
 export interface EditExerciseFormProps {
   exercise: Exercise & {sets: ISet[]}
   editExercise: (exercise: Exercise & { sets: ISet[] }) => Promise<void>
+  deleteExercise: () => Promise<void>
 }
 export const EditExerciseForm: React.FC<EditExerciseFormProps> = (props) => {
-  const { exercise, editExercise } = props
+  const { exercise, editExercise, deleteExercise } = props
   const [name, setName] = useState(exercise.name)
   const [description, setDescription] = useState(exercise.description ?? '')
   const [sets, setSets] = useState<EdittableSet[]>(exercise.sets)
@@ -38,28 +39,32 @@ export const EditExerciseForm: React.FC<EditExerciseFormProps> = (props) => {
   })
 
   return (
-    <div className='relative h-full w-full'>
-      <div className='w-fit mx-auto min-w-[350px]'>
-        <div className="flex group items-center">
-          <Input 
-            type="text" 
-            placeholder="Exercise name" 
-            className="w-full text-2xl font-bold ml-[-14px] border-none"
-            value={name}
-            onChange={e => setName(e.currentTarget.value ?? '')}
-          />
-          <FaEdit className="opacity-0 group-hover:opacity-50 transition-opacity mt-1 ml-[-20px] " />
-        </ div>
-        <div className="flex group items-center mb-4">
-          <Input 
-            type="text" 
-            placeholder="Exercise description" 
-            className="w-full ml-[-14px] border-none"
-            value={description}
-            onChange={e => setDescription(e.currentTarget.value ?? '')}
-          />
-          <FaEdit className="opacity-0 group-hover:opacity-50 transition-opacity ml-[-20px] " />
-        </ div>
+    <div className='h-full w-full'>
+      <div className='relative w-fit mx-auto min-w-[350px]'>
+        <Button 
+          className='absolute top-0 right-0 rounded-full hover:bg-destructive'
+          variant='secondary'
+          onClick={async () => { 
+            await deleteExercise()
+            push('/exercises')
+          }}
+        >
+          <FaTrashAlt />
+        </Button>
+        <Input 
+          type="text" 
+          placeholder="Exercise name" 
+          className="w-5/6 text-2xl font-bold ml-[-14px] border-none"
+          value={name}
+          onChange={e => setName(e.currentTarget.value ?? '')}
+        />
+        <Input 
+          type="text" 
+          placeholder="Exercise description" 
+          className="w-5/6 ml-[-14px] border-none"
+          value={description}
+          onChange={e => setDescription(e.currentTarget.value ?? '')}
+        />
         <SetManager 
           sets={sets}
           onChangeSets={setSets}

@@ -12,7 +12,7 @@ const ExercisePage: NextPage = async () => {
   const exercises = await getExercises()
 
   return (
-    <div className='w-5/6 mx-auto my-16'>
+    <div className='p-2 mt-8'>
       <ExerciseList 
         exercises={exercises}
       />

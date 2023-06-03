@@ -5,6 +5,14 @@ import { redirect } from 'next/navigation'
 import React from 'react'
 import { prisma } from 'server/db'
 
+async function deleteExercise (id: string) {
+  'use server'
+
+  await prisma.set.deleteMany({ where: { exerciseId: id } })
+  await prisma.exercise.delete({ where: { id } })
+
+  revalidatePath('/exercises')
+}
 
 async function editExercise (exercise: Exercise & { sets: Set[] }) {
   'use server'
@@ -62,6 +70,10 @@ const EditPage = async ({ params }: { params: { id: string } }) => {
       <EditExerciseForm 
         exercise={edittingExercise} 
         editExercise={editExercise} 
+        deleteExercise={async () => { 
+          'use server'
+          await deleteExercise(params.id)
+        }}
       />
     </div>
   )
