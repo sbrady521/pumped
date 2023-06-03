@@ -22,7 +22,7 @@ export const ExerciseList: React.FC<ExerciseListProps> = (props) => {
 
   const showSearchBar = (isMobile && search !== null) || !isMobile
 
-  const filteredExercies = exercises.filter(ex => !search || ex.name.includes(search))
+  const filteredExercies = exercises.filter(ex => !search || ex.name.toLowerCase().includes(search.toLowerCase()))
 
   return (
     <div>
