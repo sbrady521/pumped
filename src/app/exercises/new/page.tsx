@@ -3,6 +3,7 @@ import { Input } from 'components/Input'
 import { Label } from 'components/Label'
 import { Textarea } from 'components/Textarea'
 import type { NextPage } from 'next'
+import { redirect } from 'next/navigation'
 import React from 'react'
 import { prisma } from 'server/db'
 
@@ -17,9 +18,9 @@ async function createExercise (data: FormData) {
     throw Error('Invalid exercise')
   }
 
-  const result = await prisma.exercise.create({ data: { name, description } }) 
+  const exercise = await prisma.exercise.create({ data: { name, description } }) 
 
-  console.log({result})
+  redirect(`/exercises/${exercise.id}`)
 }
 
 const NewPage: NextPage = async () => {
