@@ -41,6 +41,8 @@ async function editExercise (exercise: Exercise & { sets: Set[] }) {
       sets: true
     }
   })
+
+  revalidatePath('/exercises')
 }
 
 async function getExercise (id: string) {
