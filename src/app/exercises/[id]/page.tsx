@@ -1,7 +1,5 @@
 import { Exercise, Set } from '@prisma/client'
 import { EditExerciseForm } from 'components/EditExerciseForm'
-import { revalidatePath } from 'next/cache'
-import { redirect } from 'next/navigation'
 import React from 'react'
 import { prisma } from 'server/db'
 
