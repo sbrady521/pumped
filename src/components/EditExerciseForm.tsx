@@ -1,3 +1,5 @@
+'use client'
+
 import type { Exercise, Set as ISet } from '@prisma/client'
 import * as DialogPrimitive from "@radix-ui/react-dialog"
 import React, { useEffect, useState } from 'react'
@@ -9,25 +11,25 @@ import { FaEdit } from 'react-icons/fa';
 import { Input } from 'components/Input';
 import { Button } from 'components/Button';
 
-export interface WorkoutDescProps {
+export interface WorkoutDescriptionProps {
   name: string
-  desc: string
+  description: string
   onChangeName: (name: string) => void
-  onChangeDesc: (desc: string) => void
+  onChangeDescription: (description: string) => void
   onNext: () => void
   onCancel: () => void
 }
 
-export const WorkoutDesc: React.FC<WorkoutDescProps> = (props) => {
+export const WorkoutDescription: React.FC<WorkoutDescriptionProps> = (props) => {
 
-  const { name, desc, onChangeName, onChangeDesc, onNext, onCancel } = props
+  const { name, description, onChangeName, onChangeDescription, onNext, onCancel } = props
 
   return (
     <>
       <NameAndDescription 
         name={name}
-        desc={desc}
-        onChangeDesc={onChangeDesc}
+        description={description}
+        onChangeDescription={onChangeDescription}
         onChangeName={onChangeName}
       />
       <div className='fixed bottom-16 right-16'>
@@ -44,13 +46,12 @@ export const WorkoutDesc: React.FC<WorkoutDescProps> = (props) => {
 
 export interface EditExerciseFormProps {
   exercise: Exercise & {sets: ISet[]}
-  onSubmit: (exercise: Exercise & { sets: ISet[] }) => void
+  editExercise: (exercise: Exercise & { sets: ISet[] }) => void
 }
 export const EditExerciseForm: React.FC<EditExerciseFormProps> = (props) => {
-  const { exercise, onSubmit } = props
+  const { exercise, editExercise } = props
   const [name, setName] = useState(exercise.name)
-  const [desc, setDesc] = useState(exercise.description ?? '')
-  const [exerciseId, setExerciseId] = useState(exercise.id)
+  const [description, setDescription] = useState(exercise.description ?? '')
   const [sets, setSets] = useState<EdittableSet[]>(exercise.sets)
 
   const newSet = () => ({
@@ -58,13 +59,6 @@ export const EditExerciseForm: React.FC<EditExerciseFormProps> = (props) => {
     weightMetric: 'kg' ,
     reps: 10
   })
-
-  useEffect(() => {
-    setSets(exercise.sets)
-    setName(exercise.name)
-    setDesc(exercise.description ?? '')
-    setExerciseId(exercise.id)
-  }, [exercise])
 
   return (
     <div className='relative h-full w-full'>
@@ -83,31 +77,34 @@ export const EditExerciseForm: React.FC<EditExerciseFormProps> = (props) => {
           type="text" 
           placeholder="Exercise description" 
           className="w-full ml-[-14px] border-none"
-          value={desc}
-          onChange={e => setDesc(e.currentTarget.value ?? '')}
+          value={description}
+          onChange={e => setDescription(e.currentTarget.value ?? '')}
         />
         <FaEdit className="opacity-0 group-hover:opacity-50 transition-opacity ml-[-20px] " />
       </ div>
-      <div className='mb-24'>
+      <div className='mb-4'>
         <SetManager 
           sets={sets}
           onChangeSets={setSets}
           onNewSet={() => setSets([...sets, newSet()])}
         />
       </div>
-      <div className='absolute gap-4 bottom-0 right-0'>
-        <DialogPrimitive.Close>
-          <Button variant='ghost'>
-            Cancel
-          </Button>
-        </DialogPrimitive.Close>
-        <DialogPrimitive.Close
-          onClick={() => { onSubmit({ name, id: exerciseId, description: desc, sets: sets as ISet[] }) }}
-        >
-          <Button>
-            Save
-          </Button>
-        </DialogPrimitive.Close>
+      <div className='flex gap-4 justify-end'>
+        <Button variant='ghost'>
+          Cancel
+        </Button>
+        <Button onClick={() => { 
+          const newExercise = {
+            id: exercise.id,
+            name,
+            description,
+            sets: sets as ISet[]
+          }
+          editExercise(newExercise)
+        }
+        }>
+          Save
+        </Button>
       </div>
     </div>
   )
