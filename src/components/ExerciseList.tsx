@@ -37,7 +37,7 @@ export const ExerciseList: React.FC<ExerciseListProps> = (props) => {
           />
         )}
         {!showSearchBar && (
-          <Button variant='ghost' onClick={() => setSearch('')}>
+          <Button variant='secondary' className="rounded-full" onClick={() => setSearch('')}>
             <FaSearch />
           </Button>
         )} 
