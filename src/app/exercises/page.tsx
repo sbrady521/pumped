@@ -21,5 +21,3 @@ const ExercisePage: NextPage = async () => {
 }
 
 export default ExercisePage
-
-export const revalidate = 0

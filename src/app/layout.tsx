@@ -13,6 +13,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+
   return (
     // @ts-ignore
     <html lang="en" class='dark'>

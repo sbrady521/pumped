@@ -3,6 +3,7 @@ import { Input } from 'components/Input'
 import { Label } from 'components/Label'
 import { Textarea } from 'components/Textarea'
 import type { NextPage } from 'next'
+import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import React from 'react'
 import { prisma } from 'server/db'
@@ -18,9 +19,12 @@ async function createExercise (data: FormData) {
     throw Error('Invalid exercise')
   }
 
-  const exercise = await prisma.exercise.create({ data: { name, description } }) 
-
-  redirect(`/exercises/${exercise.id}`)
+  if (name === '') {
+    redirect('/exercises')
+  } else {
+    const exercise = await prisma.exercise.create({ data: { name, description } }) 
+    redirect(`/exercises/${exercise.id}`)
+  }
 }
 
 const NewPage: NextPage = async () => {
@@ -50,9 +54,11 @@ const NewPage: NextPage = async () => {
           />
         </div>
         <div className='flex gap-4 justify-end'>
-          <Button variant='ghost'>
-            Cancel
-          </Button>
+          <Link href='/exercises'>
+            <Button variant='ghost'>
+              Cancel
+            </Button>
+          </Link>
           <Button type='submit' >
             Create exercise
           </Button>
