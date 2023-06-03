@@ -1,16 +1,46 @@
+import { Exercise, Set } from '@prisma/client'
 import { EditExerciseForm } from 'components/EditExerciseForm'
-import type { NextPage } from 'next'
-import { useParams } from 'next/navigation'
 import React from 'react'
 import { prisma } from 'server/db'
 
 
-async function editExercise (data: any) {
+async function editExercise (exercise: Exercise & { sets: Set[] }) {
   'use server'
   
-  console.log(data)
+  const { name, description, id, sets } = exercise
 
-  // const result = await prisma.exercise.create({ data: { name, description } }) 
+  const setsNoExercise = sets.map(({exerciseId, ...rest}) => rest)
+
+
+  const setEntries = setsNoExercise.map(set => ({ 
+    create: set, 
+    update: set, 
+    where: { id: set.id } 
+  }))
+
+  await prisma.set.deleteMany({
+    where: {
+      exerciseId: id,
+    },
+  })
+
+  await prisma.exercise.update({
+    data: { 
+      name, 
+      description, 
+      sets: { 
+        upsert: setEntries 
+      } 
+    },
+    where: {
+      id
+    },
+    include: {
+      sets: true
+    }
+  })
+
+  
 }
 
 async function getExercise (id: string) {
