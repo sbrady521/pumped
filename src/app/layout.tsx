@@ -15,7 +15,7 @@ export default function RootLayout({
 }) {
   return (
     // @ts-ignore
-    <html lang="en">
+    <html lang="en" class='dark'>
       <body className={inter.className}>{children}</body>
     </html>
   )
