@@ -8,17 +8,26 @@ import { Button } from "./Button"
 import { FaPlusCircle, FaSearch } from "react-icons/fa"
 import ExerciseCard from "./ExerciseCard"
 import { useRouter } from "next/navigation"
+import { useEffectOnce } from 'usehooks-ts';
+import { useExerciseStore } from 'stores/exercises/exercises';
 
 export type ExerciseListProps = {
   exercises: (Exercise & { sets: Set[] })[]
 }
 
 export const ExerciseList: React.FC<ExerciseListProps> = (props) => {
-  const { exercises }  = props
+  const { exercises: serverExercises }  = props
 
   const [search, setSearch] = useState<string | null>(null)
   const isMobile = useMediaQuery('(max-width: 640px)')
   const { push } = useRouter()
+
+  const exercises = useExerciseStore(state => state.exercises)
+  const setExercises = useExerciseStore(state => state.setExercises)
+
+  useEffectOnce(() => {
+    setExercises(serverExercises) 
+  })
 
   const showSearchBar = (isMobile && search !== null) || !isMobile
 

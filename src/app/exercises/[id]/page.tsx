@@ -1,69 +1,16 @@
-import { Exercise, Set } from '@prisma/client'
+'use client'
+
+import { deleteExercise, editExercise } from 'app/api/exercises/mutations'
 import { EditExerciseForm } from 'components/EditExerciseForm'
-import { revalidatePath } from 'next/cache'
-import { redirect } from 'next/navigation'
 import React from 'react'
-import { prisma } from 'server/db'
+import { useExerciseStore } from 'stores/exercises/exercises'
 
 export const revalidate = 3
 
-async function deleteExercise (id: string) {
-  'use server'
-
-  await prisma.set.deleteMany({ where: { exerciseId: id } })
-  await prisma.exercise.delete({ where: { id } })
-
-  revalidatePath('/exercises')
-}
-
-async function editExercise (exercise: Exercise & { sets: Set[] }) {
-  'use server'
-  
-  const { name, description, id, sets } = exercise
-
-  const setsNoExercise = sets.map(({exerciseId, ...rest}) => rest)
-
-
-  const setEntries = setsNoExercise.map(set => ({ 
-    create: set, 
-    update: set, 
-    where: { id: set.id } 
-  }))
-
-  await prisma.set.deleteMany({
-    where: {
-      exerciseId: id,
-    },
-  })
-
-  await prisma.exercise.update({
-    data: { 
-      name, 
-      description, 
-      sets: { 
-        upsert: setEntries 
-      } 
-    },
-    where: {
-      id
-    },
-    include: {
-      sets: true
-    }
-  })
-
-  revalidatePath('/exercises')
-  revalidatePath(`/exercises/${id}`)
-
-  // redirect('/exercises')
-}
-
-async function getExercise (id: string) {
-  return prisma.exercise.findUnique({ where: { id }, include: { sets: true } })
-}
-
 const EditPage = async ({ params }: { params: { id: string } }) => {
-  const edittingExercise = await getExercise(params.id)
+  const edittingExercise = useExerciseStore((state) => state.exercises.find(ex => ex.id === params.id))
+
+  console.log({edittingExercise})
 
   if (!edittingExercise) throw Error('No valid exercise')
 
@@ -72,10 +19,7 @@ const EditPage = async ({ params }: { params: { id: string } }) => {
       <EditExerciseForm 
         exercise={edittingExercise} 
         editExercise={editExercise} 
-        deleteExercise={async () => { 
-          'use server'
-          await deleteExercise(params.id)
-        }}
+        deleteExercise={() => deleteExercise(params.id)}
       />
     </div>
   )
