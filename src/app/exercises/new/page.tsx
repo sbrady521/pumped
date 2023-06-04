@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import React from 'react'
 import { prisma } from 'server/db'
+import { v4 as uuid } from 'uuid'
 
 
 async function createExercise (data: FormData) {
@@ -22,7 +23,7 @@ async function createExercise (data: FormData) {
   if (name === '') {
     redirect('/exercises')
   } else {
-    const exercise = await prisma.exercise.create({ data: { name, description } }) 
+    const exercise = await prisma.exercise.create({ data: {  name, description } }) 
     redirect(`/exercises/${exercise.id}`)
   }
 }

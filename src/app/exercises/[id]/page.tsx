@@ -5,6 +5,8 @@ import { redirect } from 'next/navigation'
 import React from 'react'
 import { prisma } from 'server/db'
 
+export const revalidate = 3
+
 async function deleteExercise (id: string) {
   'use server'
 

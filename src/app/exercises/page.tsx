@@ -3,8 +3,8 @@ import React from 'react'
 import { ExerciseList } from 'components/ExerciseList';
 import { prisma } from 'server/db';
 
-const getExercises = () => {
-  return prisma.exercise.findMany({ include: { sets: true } })
+async function getExercises () {
+  return await prisma.exercise.findMany({ include: { sets: true } })
 }
 
 const ExercisePage: NextPage = async () => {
