@@ -16,9 +16,11 @@ export const SetManager: React.FC<SetManagerProps> = (props) => {
     onChangeSets(newSets)
   }
 
+  if (!sets.length) onNewSet()
+
   return (
     <>
-      <div className='flex flex-col gap-3'>
+      <div className='flex flex-col gap-3 w-fit min-w-full'>
         {sets.map((set, idx) => (
           <div key={set.id} className='flex items-center'>
             <Set 
@@ -34,14 +36,14 @@ export const SetManager: React.FC<SetManagerProps> = (props) => {
             </Button>
           </div>
         ))}
+        <Button 
+          variant='outline'
+          className='w-full mt-4'
+          onClick={onNewSet}
+        >
+          <FaPlusCircle />
+        </Button>
       </div>
-      <Button 
-        variant='outline'
-        className='w-full mt-4'
-        onClick={onNewSet}
-      >
-        <FaPlusCircle />
-      </Button>
     </>
   )
 
