@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
-import { Exercise, Set } from "@prisma/client"
 import { useState } from "react"
 import { useMediaQuery } from "usehooks-ts"
 import { Searchbar } from "./Searchbar"
@@ -7,21 +6,21 @@ import { Button } from "./Button"
 import { FaPlusCircle, FaSearch } from "react-icons/fa"
 import ExerciseCard from "./ExerciseCard"
 import { useRouter } from "next/router"
+import { useExerciseStore } from "stores/exercises/exercises"
 
-export type ExerciseListProps = {
-  exercises: (Exercise & { sets: Set[] })[]
-}
-
-export const ExerciseList: React.FC<ExerciseListProps> = (props) => {
-  const { exercises }  = props
-
+export const ExerciseList: React.FC = () => {
   const [search, setSearch] = useState<string | null>(null)
+
+  const { exerciseIds, exercisesById } = useExerciseStore()
+
   const isMobile = useMediaQuery('(max-width: 640px)')
+
   const { push } = useRouter()
 
   const showSearchBar = (isMobile && search !== null) || !isMobile
 
-  const filteredExercies = exercises.filter(ex => !search || ex.name.toLowerCase().includes(search.toLowerCase()))
+  const filteredExerciseIds = exerciseIds
+    .filter(id => !search || exercisesById[id]?.name.toLowerCase().includes(search.toLowerCase()))
 
   return (
     <div>
@@ -55,14 +54,13 @@ export const ExerciseList: React.FC<ExerciseListProps> = (props) => {
         )}
       </div>
       <div className='flex flex-col gap-4'>
-        {filteredExercies?.map(exercise => (
+        {filteredExerciseIds?.map(id => (
           <ExerciseCard
-            key={exercise.id}
+            key={id}
             onClick={() => { 
-              push(`/exercises/${exercise.id}`) 
+              push(`/exercises/${id}`) 
             }} 
-            name={exercise.name}
-            sets={exercise.sets}
+            exerciseId={id}
           />
         ))}
       </div>

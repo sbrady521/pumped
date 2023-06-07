@@ -1,16 +1,21 @@
-import type { Set } from '@prisma/client'
 import React from 'react'
 import SetChip from 'components/SetChip'
 import { Card, CardContent, CardHeader } from './Card'
+import { useExerciseStore } from 'stores/exercises/exercises'
 
 export interface ExerciseCardProps {
-  name: string
-  sets: Set[]
+  exerciseId: string
   onClick: () => void
 }
 
 const ExerciseCard: React.FC<ExerciseCardProps> = (props) => {
-  const { name, sets, onClick } = props
+  const { exerciseId, onClick } = props
+  const { exercisesById } = useExerciseStore()
+
+  const { sets = [], name = '' } = exercisesById[exerciseId] ?? {}
+
+  console.log({exerciseId, sets, exercisesById})
+
   return (
     <Card onClick={onClick} className='flex justify-between py-4 px-6 items-center hover:bg-accent cursor-pointer'>
         <CardHeader className='p-0 mr-8 whitespace-nowrap'>

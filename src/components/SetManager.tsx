@@ -1,17 +1,18 @@
 import { Button } from "components/Button";
 import { Set } from "components/Set"
-import type { EdittableSet } from "components/Set"
 import { FaMinus, FaPlusCircle } from 'react-icons/fa';
+import type { LocalSet } from "types/exercises";
 
 interface SetManagerProps {
-  sets: EdittableSet[]
-  onChangeSets: (sets: EdittableSet[]) => void
+  sets: LocalSet[]
+  onChangeSets: (sets: LocalSet[]) => void
   onNewSet: () => void
 }
 
 export const SetManager: React.FC<SetManagerProps> = (props) => {
   const { sets, onChangeSets, onNewSet } = props
-  const onChangeSet = (changeIdx: number, newSet: EdittableSet) => {
+
+  const onChangeSet = (changeIdx: number, newSet: LocalSet) => {
     const newSets = sets.map((set, setIdx) => setIdx === changeIdx ? newSet : set)
     onChangeSets(newSets)
   }
@@ -26,7 +27,7 @@ export const SetManager: React.FC<SetManagerProps> = (props) => {
             <Set 
               set={set} 
               className="mr-4"
-              onChangeSet={(set: EdittableSet) => onChangeSet(idx, set)} 
+              onChangeSet={(set: LocalSet) => onChangeSet(idx, set)} 
             />
             <Button 
               className="h-6 px-2 rounded-full"
@@ -48,5 +49,4 @@ export const SetManager: React.FC<SetManagerProps> = (props) => {
   )
 
 }
-
 

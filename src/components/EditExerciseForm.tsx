@@ -1,12 +1,13 @@
-import type { Exercise, Set as ISet } from '@prisma/client'
-import React, { useEffect, useState } from 'react'
-import type { EdittableSet} from 'components/Set';
-import { v4 as uuid } from 'uuid'
+import React, { useState } from 'react'
 import { SetManager } from 'components/SetManager';
 import { FaTrashAlt } from 'react-icons/fa';
 import { Input } from 'components/Input';
 import { Button } from 'components/Button';
 import { useRouter } from 'next/router';
+import { createDefaultSet, localSetToRemoteSet } from 'utils/exercises';
+import type { LocalExercise } from 'types/exercises';
+import { useExerciseStore } from 'stores/exercises/exercises';
+import { api } from 'utils/api';
 
 export interface WorkoutDescriptionProps {
   name: string
@@ -18,26 +19,38 @@ export interface WorkoutDescriptionProps {
 }
 
 export interface EditExerciseFormProps {
-  exercise: Exercise & {sets: ISet[]}
-  editExercise: (exercise: Exercise & { sets: ISet[] }) => void
-  deleteExercise: () => void
+  exerciseId: string
 }
 export const EditExerciseForm: React.FC<EditExerciseFormProps> = (props) => {
-  const { exercise, editExercise, deleteExercise } = props
+  const { exerciseId } = props
 
-  const [name, setName] = useState(exercise.name)
-  const [description, setDescription] = useState(exercise.description ?? '')
-  const [stagedSets, setStagedSets] = useState<EdittableSet[] | undefined>()
-
-  const sets = stagedSets ?? exercise.sets
-  
   const { push } = useRouter()
 
-  const newSet = () => ({
-    id: uuid(),
-    weightMetric: 'kg' ,
-    reps: 10
-  })
+  const { exercisesById, exerciseChanged, exerciseDeleted } = useExerciseStore()
+
+  console.log({exercisesById})
+
+  const exercise = exercisesById[exerciseId]
+
+  const [name, setName] = useState(exercise?.name ?? '')
+  const [description, setDescription] = useState(exercise?.description ?? '')
+
+  const updateRemoteExercise = api.exercises.update.useMutation()
+  const deleteRemoteExercise = api.exercises.delete.useMutation()
+
+  const deleteExercise = () => {
+    exerciseDeleted(exerciseId) 
+    deleteRemoteExercise.mutate(exerciseId)
+  }
+
+  const updateExercise = (newExercise: Omit<LocalExercise, 'id'>) => {
+    exerciseChanged({ ...newExercise, id: exerciseId })
+    updateRemoteExercise.mutate({ 
+      ...newExercise, 
+      id: exerciseId, 
+      sets: newExercise.sets.map(ex => localSetToRemoteSet(ex, exerciseId)) 
+    })
+  }
 
   return (
     <div className='h-full w-full'>
@@ -68,9 +81,15 @@ export const EditExerciseForm: React.FC<EditExerciseFormProps> = (props) => {
           onChange={e => setDescription(e.currentTarget.value ?? '')}
         />
         <SetManager 
-          sets={sets}
-          onChangeSets={setStagedSets}
-          onNewSet={() => setStagedSets([...sets, newSet()])}
+          sets={exercise?.sets ?? []}
+          onChangeSets={sets => { 
+            if (!exercise) return
+            exerciseChanged({ ...exercise, sets })
+          }}
+          onNewSet={() => {
+            if (!exercise) return
+            exerciseChanged({ ...exercise, sets: [...exercise.sets, createDefaultSet()] })
+          }}
         />
         <div className='flex gap-4 justify-end mt-4'>
           <Button 
@@ -83,10 +102,11 @@ export const EditExerciseForm: React.FC<EditExerciseFormProps> = (props) => {
           </Button>
           <Button 
             onClick={() =>  { 
-              editExercise({ id: exercise.id, name, description, sets: stagedSets as ISet[] }) 
+              if (!exercise) return
+              const { name, description, sets } = exercise
+              updateExercise({ name, description, sets }) 
               // eslint-disable-next-line @typescript-eslint/no-floating-promises
               push('/exercises')
-              setStagedSets(undefined)
             }}
           >
             Save

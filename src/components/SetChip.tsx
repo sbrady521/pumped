@@ -2,13 +2,17 @@ import React from 'react'
 import { Card } from './Card'
 
 export interface SetChipProps {
-  weight: number
-  reps: number
-  weightMetric: string
+  weight?: number
+  reps?: number
+  weightMetric?: string
 }
 
 const SetChip: React.FC<SetChipProps> = (props) => {
-  const { weight, reps, weightMetric } = props
+  const { 
+    weight = 0, 
+    reps = 0, 
+    weightMetric = 'kg'
+  } = props
   return (
     <Card className='py-2 px-4 w-fit whitespace-nowrap'>
       <span className='font-bold'>{`${weight}${weightMetric}`}</span>

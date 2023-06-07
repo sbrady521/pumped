@@ -1,18 +1,14 @@
-import type { Set as ISet } from '@prisma/client'
 import React from 'react'
 import { FaTimes } from 'react-icons/fa'
 import { Input } from './Input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './Select'
 import { cn } from 'utils/tailwind'
-
-export interface EdittableSet extends Omit<ISet, 'weight' | 'exerciseId'> {
-  weight?: number
-}
+import type { LocalSet } from 'types/exercises'
 
 export interface SetProps {
-  set: EdittableSet
+  set: LocalSet
   className?: string
-  onChangeSet: (set: EdittableSet) => void
+  onChangeSet: (set: LocalSet) => void
 }
 
 export const Set: React.FC<SetProps> = (props) => {

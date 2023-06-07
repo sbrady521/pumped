@@ -8,25 +8,25 @@ import type { NextPage } from 'next/types'
 import { useState } from 'react'
 import { api } from 'utils/api'
 import { useRouter } from 'next/router'
-import { useLoadingEllipsis } from 'hooks/useLoadingEllipsis'
+import { useExerciseStore } from 'stores/exercises/exercises'
 
 
 const NewPage: NextPage = () => {
+  const { push } = useRouter()
+
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
-  const [isCreating, setIsCreating] = useState(false)
-  const loadingEllipsis = useLoadingEllipsis()
 
-  const { push } = useRouter()
+  const { exerciseCreated } = useExerciseStore()
 
   const createExercise = api.exercises.create.useMutation()
 
-  const onSubmit = async () => {
+  const handleCreate = () => {
     const id = uuid()
-    setIsCreating(true)
-    await createExercise.mutateAsync({ name, description, id })
-    setIsCreating(false)
-    await push(`/exercises/${id}`)
+    exerciseCreated({ name, description, id }) 
+    createExercise.mutate({ name, description, id })
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    push(`/exercises/${id}`)
   }
 
   return (
@@ -34,7 +34,7 @@ const NewPage: NextPage = () => {
       <h1 className="text-2xl font-bold mb-4">
         Workout description
       </h1>
-      <form>
+      <div>
         <div className='mb-4 w-full'>
           <Label htmlFor='name'>Name</Label>
           <Input 
@@ -61,21 +61,12 @@ const NewPage: NextPage = () => {
             </Button>
           </Link>
           <Button 
-            onClick={() => { 
-              // eslint-disable-next-line @typescript-eslint/no-floating-promises
-              // onSubmit() 
-              const id = uuid()
-              createExercise.mutate({name, description, id})
-              // eslint-disable-next-line @typescript-eslint/no-floating-promises
-              push(`/exercises/${id}`)
-
-            }}
+            onClick={handleCreate}
           >
-            {isCreating && `Creating${loadingEllipsis}`}
-            {!isCreating && 'Create exercise'}
+            Create exercise
           </Button>
         </div>
-      </form>
+      </div>
     </div>
   )
 }
