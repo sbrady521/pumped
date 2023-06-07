@@ -7,11 +7,13 @@ import { FaPlusCircle, FaSearch } from "react-icons/fa"
 import ExerciseCard from "./ExerciseCard"
 import { useRouter } from "next/router"
 import { useExerciseStore } from "stores/exercises/exercises"
+import { selectOrderedExerciseIds } from "stores/exercises/selectors"
 
 export const ExerciseList: React.FC = () => {
   const [search, setSearch] = useState<string | null>(null)
 
-  const { exerciseIds, exercisesById } = useExerciseStore()
+  const exerciseStore = useExerciseStore()
+  const orderedExerciseIds = selectOrderedExerciseIds(exerciseStore)
 
   const isMobile = useMediaQuery('(max-width: 640px)')
 
@@ -19,8 +21,8 @@ export const ExerciseList: React.FC = () => {
 
   const showSearchBar = (isMobile && search !== null) || !isMobile
 
-  const filteredExerciseIds = exerciseIds
-    .filter(id => !search || exercisesById[id]?.name.toLowerCase().includes(search.toLowerCase()))
+  const filteredExerciseIds = orderedExerciseIds
+    .filter(id => !search || exerciseStore.exercisesById[id]?.name.toLowerCase().includes(search.toLowerCase()))
 
   return (
     <div>
