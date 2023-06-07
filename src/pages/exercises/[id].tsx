@@ -11,15 +11,11 @@ const EditPage = () => {
   const exerciseId = query.id as string
 
   const { data: edittingExercise, isLoading } = api.exercises.get.useQuery(exerciseId, { enabled: !!exerciseId })
-  console.log({edittingExercise})
 
   const updateExercise = api.exercises.update.useMutation({
     onSuccess(input) {
       utils.exercises.getAll.invalidate()
-      if (input.id) { 
-        console.log(`invalidate ${input.id}`)
-        utils.exercises.get.invalidate(input.id)
-      }
+      if (input.id) utils.exercises.get.invalidate(input.id)
     }
   })
   const deleteExercise = api.exercises.delete.useMutation({

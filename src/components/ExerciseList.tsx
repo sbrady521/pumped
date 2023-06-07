@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 import { Exercise, Set } from "@prisma/client"
 import { useState } from "react"
 import { useMediaQuery } from "usehooks-ts"
@@ -42,7 +43,9 @@ export const ExerciseList: React.FC<ExerciseListProps> = (props) => {
         {!(isMobile && showSearchBar) && (
           <Button 
             className="gap-2"
-            onClick={async () => { await push('/exercises/new') }}
+            onClick={() => { 
+              push('/exercises/new') 
+            }}
           >
             <>
               <FaPlusCircle />
@@ -55,7 +58,9 @@ export const ExerciseList: React.FC<ExerciseListProps> = (props) => {
         {filteredExercies?.map(exercise => (
           <ExerciseCard
             key={exercise.id}
-            onClick={async () => { await push(`/exercises/${exercise.id}`) }} 
+            onClick={() => { 
+              push(`/exercises/${exercise.id}`) 
+            }} 
             name={exercise.name}
             sets={exercise.sets}
           />

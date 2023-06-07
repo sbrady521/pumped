@@ -1,5 +1,5 @@
 import type { Exercise, Set as ISet } from '@prisma/client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import type { EdittableSet} from 'components/Set';
 import { v4 as uuid } from 'uuid'
 import { SetManager } from 'components/SetManager';
@@ -27,7 +27,9 @@ export const EditExerciseForm: React.FC<EditExerciseFormProps> = (props) => {
 
   const [name, setName] = useState(exercise.name)
   const [description, setDescription] = useState(exercise.description ?? '')
-  const [sets, setSets] = useState<EdittableSet[]>(exercise.sets)
+  const [stagedSets, setStagedSets] = useState<EdittableSet[] | undefined>()
+
+  const sets = stagedSets ?? exercise.sets
   
   const { push } = useRouter()
 
@@ -67,8 +69,8 @@ export const EditExerciseForm: React.FC<EditExerciseFormProps> = (props) => {
         />
         <SetManager 
           sets={sets}
-          onChangeSets={setSets}
-          onNewSet={() => setSets([...sets, newSet()])}
+          onChangeSets={setStagedSets}
+          onNewSet={() => setStagedSets([...sets, newSet()])}
         />
         <div className='flex gap-4 justify-end mt-4'>
           <Button 
@@ -81,9 +83,10 @@ export const EditExerciseForm: React.FC<EditExerciseFormProps> = (props) => {
           </Button>
           <Button 
             onClick={() =>  { 
-              editExercise({ id: exercise.id, name, description, sets: sets as ISet[] }) 
+              editExercise({ id: exercise.id, name, description, sets: stagedSets as ISet[] }) 
               // eslint-disable-next-line @typescript-eslint/no-floating-promises
               push('/exercises')
+              setStagedSets(undefined)
             }}
           >
             Save
