@@ -30,7 +30,7 @@ const NewPage: NextPage = () => {
   }
 
   return (
-    <div className='w-5/6 h-5/6 mx-auto my-16'>
+    <div className='w-full h-full mx-auto pt-8'>
       <h1 className="text-2xl font-bold mb-4">
         Workout description
       </h1>

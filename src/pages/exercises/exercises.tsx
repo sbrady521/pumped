@@ -4,7 +4,7 @@ import { ExerciseList } from 'components/ExerciseList';
 
 const ExercisePage: NextPage = () => {
   return (
-    <div className='w-full p-2 mt-8'>
+    <div className='w-full mt-8'>
       <ExerciseList />
     </div>
   )

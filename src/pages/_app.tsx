@@ -24,7 +24,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
           <meta name="description" content="Get pumped" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
-        <main className='flex w-screen h-screen'>
+        <main className='flex w-screen h-screen px-4'>
           <Component {...pageProps} />
           <ThemeSwitcher />
         </ main>

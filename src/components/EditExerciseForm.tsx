@@ -28,8 +28,6 @@ export const EditExerciseForm: React.FC<EditExerciseFormProps> = (props) => {
 
   const { exercisesById, exerciseChanged, exerciseDeleted } = useExerciseStore()
 
-  console.log({exercisesById})
-
   const exercise = exercisesById[exerciseId]
 
   const [name, setName] = useState(exercise?.name ?? '')
@@ -53,19 +51,8 @@ export const EditExerciseForm: React.FC<EditExerciseFormProps> = (props) => {
   }
 
   return (
-    <div className='h-full w-full'>
-      <div className='relative w-fit mx-auto min-w-[350px]'>
-        <Button 
-          className='absolute top-0 right-0 rounded-full hover:bg-destructive'
-          variant='secondary'
-          onClick={() => {
-            deleteExercise()
-            // eslint-disable-next-line @typescript-eslint/no-floating-promises
-            push('/exercises')
-          }}
-        >
-          <FaTrashAlt />
-        </Button>
+    <div className='relative h-full w-full'>
+      <div className='w-fit mx-auto min-w-[350px]'>
         <Input 
           type="text" 
           placeholder="Exercise name" 
@@ -112,6 +99,18 @@ export const EditExerciseForm: React.FC<EditExerciseFormProps> = (props) => {
             Save
           </Button>
         </div>
+        <Button 
+          className='flex gap-2 hover:bg-destructive w-full mt-16'
+          variant='outline'
+          onClick={() => {
+            deleteExercise()
+            // eslint-disable-next-line @typescript-eslint/no-floating-promises
+            push('/exercises')
+          }}
+        >
+          <FaTrashAlt />
+          Delete
+        </Button>
       </div>
     </div>
   )

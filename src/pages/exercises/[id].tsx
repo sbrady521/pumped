@@ -8,7 +8,7 @@ const EditPage = () => {
   if (!query.id) return <div>Loading</div>
 
   return (
-    <div className='w-5/6 h-5/6 mx-auto my-16'>
+    <div className='w-full h-full mx-auto pt-8'>
       <EditExerciseForm exerciseId={query.id as string} />
     </div>
   )

@@ -25,6 +25,7 @@ export const Set: React.FC<SetProps> = (props) => {
       <Input 
         className='w-2/6' 
         placeholder='Weight' 
+        type='number'
         value={weight ?? ''} 
         autoFocus
         onChange={(e) => onChangeSet({ ...set, weight: parseInt(e.currentTarget.value || '0') })}
@@ -47,6 +48,7 @@ export const Set: React.FC<SetProps> = (props) => {
       <Input 
         className='w-2/6' 
         placeholder='Weight' 
+        type='number'
         value={reps} 
         onChange={(e) => onChangeSet({ weight: 0, ...set, reps: parseInt(e.currentTarget.value || '0') })}
       />
