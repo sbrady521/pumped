@@ -1,26 +1,32 @@
-import type { Exercise, Set } from '@prisma/client'
+/* eslint-disable @typescript-eslint/no-floating-promises */
 import { EditExerciseForm } from 'components/EditExerciseForm'
+import { useRouter } from 'next/router'
 import React from 'react'
 import { api } from 'utils/api'
 
-const EditPage = ({ params }: { params: { id: string } }) => {
-  const { data: edittingExercise, isLoading } = api.exercises.get.useQuery(params.id)
-  const trpcUtils = api.useContext()
+const EditPage = () => {
+  const { query } = useRouter()
+  const utils = api.useContext()
+
+  const exerciseId = query.id as string
+
+  const { data: edittingExercise, isLoading } = api.exercises.get.useQuery(exerciseId, { enabled: !!exerciseId })
+  console.log({edittingExercise})
 
   const updateExercise = api.exercises.update.useMutation({
-    onMutate: async (newExercise) => {
-      await trpcUtils.exercises.getAll.cancel()
-      const previous = trpcUtils.exercises.getAll.getData() ?? []
-
-      const newData = (previous.findIndex(ex => ex.id === newExercise.id) !== -1)
-         ? previous.map(ex => ex.id === newExercise.id ? newExercise : ex) as (Exercise & { sets: Set[] })[]
-         : [...previous, newExercise] as (Exercise & { sets: Set[] })[]
-
-      trpcUtils.exercises.getAll.setData(undefined, newData)
+    onSuccess(input) {
+      utils.exercises.getAll.invalidate()
+      if (input.id) { 
+        console.log(`invalidate ${input.id}`)
+        utils.exercises.get.invalidate(input.id)
+      }
     }
   })
-
-  const deleteExercise = api.exercises.delete.useMutation()
+  const deleteExercise = api.exercises.delete.useMutation({
+    onSuccess() {
+      utils.exercises.getAll.invalidate()
+    }
+  })
 
   if (isLoading || !edittingExercise) return <div>Loading</div>
 
@@ -29,7 +35,7 @@ const EditPage = ({ params }: { params: { id: string } }) => {
       <EditExerciseForm 
         exercise={edittingExercise} 
         editExercise={(newExercise) => { updateExercise.mutate(newExercise) }} 
-        deleteExercise={() => { deleteExercise.mutate(params.id) }}
+        deleteExercise={() => { deleteExercise.mutate(exerciseId) }}
       />
     </div>
   )

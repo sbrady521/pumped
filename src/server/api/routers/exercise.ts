@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
-const exercise = z.object({
+const exerciseWithSets = z.object({
   name: z.string(),
   description: z.string(),
   id: z.string(),
@@ -14,6 +14,12 @@ const exercise = z.object({
       id: z.string()
     })
   )
+})
+
+const exercise = z.object({
+  name: z.string(),
+  description: z.string(),
+  id: z.string(),
 })
 
 const id = z.string()
@@ -44,7 +50,7 @@ export const exerciseRouter = createTRPCRouter({
     await ctx.prisma.set.deleteMany({ where: { exerciseId: input } })
     await ctx.prisma.exercise.deleteMany({ where: { id: input } })
   }),
-  update: protectedProcedure.input(exercise).mutation(async ({ ctx, input }) => {
+  update: protectedProcedure.input(exerciseWithSets).mutation(async ({ ctx, input }) => {
     const { name, description, id, sets } = input
 
     const setEntries = sets.map(set => ({ 
@@ -55,7 +61,7 @@ export const exerciseRouter = createTRPCRouter({
 
     await ctx.prisma.set.deleteMany({ where: { exerciseId: id } })
 
-    await ctx.prisma.exercise.update({
+    return await ctx.prisma.exercise.update({
       data: { 
         name, 
         description, 
@@ -70,6 +76,5 @@ export const exerciseRouter = createTRPCRouter({
         sets: true
       }
     })
-
   })
 })

@@ -24,6 +24,7 @@ export interface EditExerciseFormProps {
 }
 export const EditExerciseForm: React.FC<EditExerciseFormProps> = (props) => {
   const { exercise, editExercise, deleteExercise } = props
+
   const [name, setName] = useState(exercise.name)
   const [description, setDescription] = useState(exercise.description ?? '')
   const [sets, setSets] = useState<EdittableSet[]>(exercise.sets)
@@ -42,7 +43,11 @@ export const EditExerciseForm: React.FC<EditExerciseFormProps> = (props) => {
         <Button 
           className='absolute top-0 right-0 rounded-full hover:bg-destructive'
           variant='secondary'
-          onClick={deleteExercise}
+          onClick={() => {
+            deleteExercise()
+            // eslint-disable-next-line @typescript-eslint/no-floating-promises
+            push('/exercises')
+          }}
         >
           <FaTrashAlt />
         </Button>
@@ -66,11 +71,20 @@ export const EditExerciseForm: React.FC<EditExerciseFormProps> = (props) => {
           onNewSet={() => setSets([...sets, newSet()])}
         />
         <div className='flex gap-4 justify-end mt-4'>
-          <Button variant='ghost' onClick={async () => { await push('/exercises') }}>
+          <Button 
+            variant='ghost' 
+            onClick={() => { 
+              // eslint-disable-next-line @typescript-eslint/no-floating-promises
+              push('/exercises')
+            }}>
             Cancel
           </Button>
           <Button 
-            onClick={() =>  editExercise({ id: exercise.id, name, description, sets: sets as ISet[] }) }
+            onClick={() =>  { 
+              editExercise({ id: exercise.id, name, description, sets: sets as ISet[] }) 
+              // eslint-disable-next-line @typescript-eslint/no-floating-promises
+              push('/exercises')
+            }}
           >
             Save
           </Button>
