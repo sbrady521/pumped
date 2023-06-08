@@ -1,3 +1,4 @@
+import { Button } from "components/Button";
 import { type NextPage } from "next";
 import { signIn, signOut, useSession } from "next-auth/react";
 
@@ -6,7 +7,7 @@ import { useRouter } from "next/router";
 const Home: NextPage = () => {
   return (
     <div className="w-full">
-      <h1 className="text-5xl text-center mb-8 font-extrabold tracking-tight sm:text-[5rem]">
+      <h1 className="text-5xl text-center mb-8 mt-40 font-extrabold tracking-tight sm:text-[5rem]">
         Pumped
       </h1>
       <div className="flex flex-col items-center gap-2">
@@ -31,11 +32,13 @@ const AuthShowcase: React.FC = () => {
       <p className="text-center text-2xl text-white">
         {sessionData && <span>Logged in as {sessionData.user?.name}</span>}
       </p>
-      <button
-        className="rounded-full bg-black/70 px-10 py-3 font-semibold text-white no-underline transition hover:bg-black"
+      <Button
+        size='lg'
+        className="rounded-full w-80"
         onClick={sessionData ? () => void signOut() : () => void signIn()}
       >
-      </button>
+        {sessionData ? "Sign out" : "Sign in"}
+      </Button>
     </div>
   );
 };

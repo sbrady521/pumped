@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 import type { NextPage } from 'next'
 import React from 'react'
 import { ExerciseList } from 'components/ExerciseList';
