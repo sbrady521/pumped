@@ -51,8 +51,8 @@ export const EditExerciseForm: React.FC<EditExerciseFormProps> = (props) => {
   }
 
   return (
-    <div className='relative h-full w-full'>
-      <div className='w-fit mx-auto min-w-[350px]'>
+    <div className='h-full w-full'>
+      <div className='relative w-fit mx-auto min-w-[350px] h-full'>
         <Input 
           type="text" 
           placeholder="Exercise name" 
@@ -100,7 +100,7 @@ export const EditExerciseForm: React.FC<EditExerciseFormProps> = (props) => {
           </Button>
         </div>
         <Button 
-          className='flex gap-2 hover:bg-destructive w-full mt-16'
+          className='absolute bottom-8 flex gap-2 hover:bg-destructive w-full mt-16'
           variant='outline'
           onClick={() => {
             deleteExercise()

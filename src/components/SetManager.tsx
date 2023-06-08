@@ -17,8 +17,6 @@ export const SetManager: React.FC<SetManagerProps> = (props) => {
     onChangeSets(newSets)
   }
 
-  if (!sets.length) onNewSet()
-
   return (
     <>
       <div className='flex flex-col gap-3 w-fit min-w-full'>

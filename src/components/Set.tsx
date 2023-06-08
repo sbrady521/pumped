@@ -20,6 +20,8 @@ export const Set: React.FC<SetProps> = (props) => {
 
   const { weight, weightMetric, reps } = set
 
+  console.log({weight})
+
   return (
     <div className={cn('flex items-center', className)}>
       <Input 
@@ -28,7 +30,10 @@ export const Set: React.FC<SetProps> = (props) => {
         type='number'
         value={weight ?? ''} 
         autoFocus
-        onChange={(e) => onChangeSet({ ...set, weight: parseInt(e.currentTarget.value || '0') })}
+        onChange={(e) => onChangeSet({ 
+          ...set, 
+          weight: e.currentTarget.value ? parseInt(e.currentTarget.value) : undefined 
+        })}
       />
       <Select 
         onValueChange={(weightMetric: string) => onChangeSet({ weight: 0, ...set, weightMetric })}

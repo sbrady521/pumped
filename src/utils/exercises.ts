@@ -3,8 +3,6 @@ import { v4 as uuid } from 'uuid'
 export function createDefaultSet () {
   return {
     id: uuid(),
-    weight: 0,
-    exerciseId: '',
     weightMetric: 'kg' ,
     reps: 10
   }
