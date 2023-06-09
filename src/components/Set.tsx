@@ -36,7 +36,7 @@ export const Set: React.FC<SetProps> = (props) => {
         })}
       />
       <Select 
-        onValueChange={(weightMetric: string) => onChangeSet({ weight: 0, ...set, weightMetric })}
+        onValueChange={(weightMetric: string) => onChangeSet({...set, weightMetric })}
       >
         <SelectTrigger className='w-20 ml-2'>
           <SelectValue placeholder={weightMetric} />
@@ -55,7 +55,10 @@ export const Set: React.FC<SetProps> = (props) => {
         placeholder='Weight' 
         type='number'
         value={reps} 
-        onChange={(e) => onChangeSet({ weight: 0, ...set, reps: parseInt(e.currentTarget.value || '0') })}
+        onChange={(e) => onChangeSet({ 
+          ...set, 
+          reps: e.currentTarget.value ? parseInt(e.currentTarget.value) : undefined 
+        })}
       />
       <div className='flex items-center justify-center ml-2 font-bold'>
         reps
