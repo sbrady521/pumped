@@ -20,8 +20,6 @@ export const Set: React.FC<SetProps> = (props) => {
 
   const { weight, weightMetric, reps } = set
 
-  console.log({weight})
-
   return (
     <div className={cn('flex items-center', className)}>
       <Input 

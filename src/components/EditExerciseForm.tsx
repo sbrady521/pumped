@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { SetManager } from 'components/SetManager';
-import { FaTrashAlt } from 'react-icons/fa';
+import { FaEllipsisV, FaTrashAlt } from 'react-icons/fa';
 import { Input } from 'components/Input';
 import { Button } from 'components/Button';
 import { useRouter } from 'next/router';
@@ -8,6 +8,7 @@ import { createDefaultSet, localSetToRemoteSet } from 'utils/exercises';
 import type { LocalExercise } from 'types/exercises';
 import { useExerciseStore } from 'stores/exercises/exercises';
 import { api } from 'utils/api';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from './DropdownMenu';
 
 export interface WorkoutDescriptionProps {
   name: string
@@ -39,6 +40,8 @@ export const EditExerciseForm: React.FC<EditExerciseFormProps> = (props) => {
   const deleteExercise = () => {
     exerciseDeleted(exerciseId) 
     deleteRemoteExercise.mutate(exerciseId)
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    push('/exercises')
   }
 
   const updateExercise = (newExercise: Omit<LocalExercise, 'id'>) => {
@@ -60,10 +63,26 @@ export const EditExerciseForm: React.FC<EditExerciseFormProps> = (props) => {
           value={name}
           onChange={e => setName(e.currentTarget.value ?? '')}
         />
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button className='absolute top-0 right-[-16px]' variant='ghost'>
+              <FaEllipsisV />
+            </Button> 
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem 
+              className='flex gap-2 cursor-pointer'
+              onClick={deleteExercise}
+            >
+              <FaTrashAlt />
+              Delete
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
         <Input 
           type="text" 
           placeholder="Exercise description" 
-          className="w-5/6 ml-[-14px] border-none"
+          className="w-5/6 ml-[-14px] border-none mb-4"
           value={description}
           onChange={e => setDescription(e.currentTarget.value ?? '')}
         />
@@ -99,18 +118,6 @@ export const EditExerciseForm: React.FC<EditExerciseFormProps> = (props) => {
             Save
           </Button>
         </div>
-        <Button 
-          className='absolute bottom-8 flex gap-2 hover:bg-destructive w-full mt-16'
-          variant='outline'
-          onClick={() => {
-            deleteExercise()
-            // eslint-disable-next-line @typescript-eslint/no-floating-promises
-            push('/exercises')
-          }}
-        >
-          <FaTrashAlt />
-          Delete
-        </Button>
       </div>
     </div>
   )

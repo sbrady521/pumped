@@ -26,7 +26,6 @@ const MyApp: AppType<{ session: Session | null }> = ({
         </Head>
         <main className='flex w-screen h-screen px-4'>
           <Component {...pageProps} />
-          <ThemeSwitcher />
         </ main>
       </div>
     </SessionProvider>
