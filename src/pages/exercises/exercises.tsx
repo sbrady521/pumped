@@ -6,7 +6,7 @@ import { ThemeSwitcher } from 'components/ThemeSwitcher';
 
 const ExercisePage: NextPage = () => {
   return (
-    <div className='w-full mt-8'>
+    <div className='relative w-full my-8'>
       <ExerciseList />
       <ThemeSwitcher />
     </div>

@@ -8,7 +8,7 @@ export const ThemeSwitcher = () => {
   return (
     <Button 
       variant='ghost'
-      className="absolute bottom-0 right-0"
+      className="fixed bottom-0 right-0"
       onClick={() => { 
         setTheme(theme === 'light' ? 'dark' : 'light')
       }}

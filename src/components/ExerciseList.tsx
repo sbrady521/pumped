@@ -7,13 +7,15 @@ import { FaPlusCircle, FaSearch } from "react-icons/fa"
 import ExerciseCard from "./ExerciseCard"
 import { useRouter } from "next/router"
 import { useExerciseStore } from "stores/exercises/exercises"
-import { selectOrderedExerciseIds } from "stores/exercises/selectors"
+import { selectIsLoading, selectOrderedExerciseIds } from "stores/exercises/selectors"
+import LoadingExerciseCard from "./LoadingExerciseCard"
 
 export const ExerciseList: React.FC = () => {
   const [search, setSearch] = useState<string | null>(null)
 
   const exerciseStore = useExerciseStore()
   const orderedExerciseIds = selectOrderedExerciseIds(exerciseStore)
+  const isLoading = selectIsLoading(exerciseStore)
 
   const isMobile = useMediaQuery('(max-width: 640px)')
 
@@ -25,7 +27,7 @@ export const ExerciseList: React.FC = () => {
     .filter(id => !search || exerciseStore.exercisesById[id]?.name.toLowerCase().includes(search.toLowerCase()))
 
   return (
-    <div>
+    <div className="">
       <div className='flex mb-4 justify-between'>
         {showSearchBar && ( 
           <Searchbar 
@@ -55,8 +57,8 @@ export const ExerciseList: React.FC = () => {
           </Button>
         )}
       </div>
-      <div className='flex flex-col gap-4'>
-        {filteredExerciseIds?.map(id => (
+      <div className='flex flex-col gap-4 h-full overflow-auto'>
+        {!isLoading && filteredExerciseIds?.map(id => (
           <ExerciseCard
             key={id}
             onClick={() => { 
@@ -65,6 +67,8 @@ export const ExerciseList: React.FC = () => {
             exerciseId={id}
           />
         ))}
+
+        {isLoading && Array.from({ length: 15 }, (_, idx) => <LoadingExerciseCard key={idx} />)}
       </div>
     </div>
   )
