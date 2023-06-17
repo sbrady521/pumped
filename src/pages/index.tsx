@@ -26,7 +26,6 @@ const AuthShowcase: React.FC = () => {
   // eslint-disable-next-line @typescript-eslint/no-floating-promises
   if (sessionData) push('/exercises')
 
-
   return (
     <div className="flex flex-col items-center justify-center gap-4">
       <p className="text-center text-2xl text-white">

@@ -30,7 +30,7 @@ export const Set: React.FC<SetProps> = (props) => {
         autoFocus
         onChange={(e) => onChangeSet({ 
           ...set, 
-          weight: e.currentTarget.value ? parseInt(e.currentTarget.value) : undefined 
+          weight: e.currentTarget.value ? parseFloat(e.currentTarget.value) : undefined 
         })}
       />
       <Select 

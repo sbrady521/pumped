@@ -7,6 +7,7 @@ import { api } from "../utils/api";
 import "../styles/globals.css";
 import Head from "next/head";
 import { useSyncExercises } from "stores/exercises/hooks";
+import { useTheme } from "hooks/useTheme";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -14,6 +15,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
 
   useSyncExercises()
+  useTheme()
 
   return (
     <SessionProvider session={session}>

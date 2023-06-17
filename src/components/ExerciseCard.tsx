@@ -14,8 +14,6 @@ const ExerciseCard: React.FC<ExerciseCardProps> = (props) => {
 
   const { sets = [], name = '' } = exercisesById[exerciseId] ?? {}
 
-  console.log({exerciseId, sets, exercisesById})
-
   return (
     <Card onClick={onClick} className='flex justify-between py-4 px-6 items-center hover:bg-accent cursor-pointer'>
         <CardHeader className='p-0 mr-8 whitespace-nowrap'>
