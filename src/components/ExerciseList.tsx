@@ -15,7 +15,7 @@ export const ExerciseList: React.FC = () => {
 
   const exerciseStore = useExerciseStore()
   const orderedExerciseIds = selectOrderedExerciseIds(exerciseStore)
-  const isLoading = selectIsLoading(exerciseStore)
+  // const isLoading = selectIsLoading(exerciseStore)
 
   const isMobile = useMediaQuery('(max-width: 640px)')
 
@@ -58,7 +58,7 @@ export const ExerciseList: React.FC = () => {
         )}
       </div>
       <div className='flex flex-col gap-4 h-full overflow-auto'>
-        {!isLoading && filteredExerciseIds?.map(id => (
+        {filteredExerciseIds?.map(id => (
           <ExerciseCard
             key={id}
             onClick={() => { 
@@ -68,7 +68,7 @@ export const ExerciseList: React.FC = () => {
           />
         ))}
 
-        {isLoading && Array.from({ length: 15 }, (_, idx) => <LoadingExerciseCard key={idx} />)}
+        {/* {isLoading && Array.from({ length: 15 }, (_, idx) => <LoadingExerciseCard key={idx} />)} */}
       </div>
     </div>
   )
