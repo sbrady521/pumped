@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { createTRPCRouter, protectedProcedure } from "../trpc";
+import { getServerAuthSession } from "server/auth";
 
 const exerciseWithSets = z.object({
   name: z.string(),
@@ -29,12 +30,15 @@ export const exerciseRouter = createTRPCRouter({
     const result = ctx.prisma.exercise.findMany({
       include: {
         sets: true
+      },
+      where: {
+        createdBy: ctx.session.user.id
       }
     });
     return result
   }),
-  get: protectedProcedure.input(id).query(({ ctx, input }) => {
-    return ctx.prisma.exercise.findUnique({
+  get: protectedProcedure.input(id).query(async ({ ctx, input }) => {
+    return await ctx.prisma.exercise.findUnique({
       where: { id: input },
       include: {
         sets: true
@@ -44,7 +48,7 @@ export const exerciseRouter = createTRPCRouter({
   create: protectedProcedure.input(exercise).mutation(({ ctx, input }) => {
     const { name, description, id } = input
 
-    return ctx.prisma.exercise.create({ data: { name, description, id } })
+    return ctx.prisma.exercise.create({ data: { name, description, id, createdBy: ctx.session.user.id } })
   }),
   delete: protectedProcedure.input(id).mutation(async ({ ctx, input }) => {
     await ctx.prisma.set.deleteMany({ where: { exerciseId: input } })
@@ -65,7 +69,7 @@ export const exerciseRouter = createTRPCRouter({
       data: { 
         name, 
         description, 
-        sets: { 
+        sets: {
           upsert: setEntries 
         } 
       },

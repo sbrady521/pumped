@@ -73,6 +73,9 @@ model Set {
 
 model Exercise {
   id   String @id @default(cuid())
+  createdBy String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   name String
   description String @default("")
   sets Set[]

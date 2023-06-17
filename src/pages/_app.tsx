@@ -6,7 +6,6 @@ import { api } from "../utils/api";
 
 import "../styles/globals.css";
 import Head from "next/head";
-import { ThemeSwitcher } from "components/ThemeSwitcher";
 import { useSyncExercises } from "stores/exercises/hooks";
 
 const MyApp: AppType<{ session: Session | null }> = ({
