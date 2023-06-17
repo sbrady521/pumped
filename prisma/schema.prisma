@@ -64,7 +64,7 @@ model VerificationToken {
 
 model Set {
   id         String    @id @default(cuid())
-  weight     Int  @default(0)
+  weight     Float  @default(0)
   weightMetric     String @default("kg")
   reps       Int
   Exercise   Exercise? @relation(fields: [exerciseId], references: [id])
