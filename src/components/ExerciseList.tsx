@@ -15,7 +15,7 @@ export const ExerciseList: React.FC = () => {
 
   const exerciseStore = useExerciseStore()
   const orderedExerciseIds = selectOrderedExerciseIds(exerciseStore)
-  // const isLoading = selectIsLoading(exerciseStore)
+  const isLoading = selectIsLoading(exerciseStore)
 
   const isMobile = useMediaQuery('(max-width: 640px)')
 
@@ -25,6 +25,10 @@ export const ExerciseList: React.FC = () => {
 
   const filteredExerciseIds = orderedExerciseIds
     .filter(id => !search || exerciseStore.exercisesById[id]?.name.toLowerCase().includes(search.toLowerCase()))
+
+  const cards = true 
+    ? Array.from({ length: 15 }, (_, idx) => <LoadingExerciseCard key={idx} />)
+    : filteredExerciseIds?.map(id => <ExerciseCard key={id} onClick={() => { push(`/exercises/${id}`) }} exerciseId={id} />)
 
   return (
     <div className="">
@@ -58,17 +62,7 @@ export const ExerciseList: React.FC = () => {
         )}
       </div>
       <div className='flex flex-col gap-4 h-full overflow-auto'>
-        {filteredExerciseIds?.map(id => (
-          <ExerciseCard
-            key={id}
-            onClick={() => { 
-              push(`/exercises/${id}`) 
-            }} 
-            exerciseId={id}
-          />
-        ))}
-
-        {/* {isLoading && Array.from({ length: 15 }, (_, idx) => <LoadingExerciseCard key={idx} />)} */}
+        {cards}
       </div>
     </div>
   )
