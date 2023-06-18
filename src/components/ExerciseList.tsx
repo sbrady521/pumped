@@ -26,7 +26,7 @@ export const ExerciseList: React.FC = () => {
   const filteredExerciseIds = orderedExerciseIds
     .filter(id => !search || exerciseStore.exercisesById[id]?.name.toLowerCase().includes(search.toLowerCase()))
 
-  const cards = true 
+  const cards = isLoading 
     ? Array.from({ length: 15 }, (_, idx) => <LoadingExerciseCard key={idx} />)
     : filteredExerciseIds?.map(id => <ExerciseCard key={id} onClick={() => { push(`/exercises/${id}`) }} exerciseId={id} />)
 
