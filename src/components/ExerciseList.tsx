@@ -39,7 +39,6 @@ export const ExerciseList: React.FC = () => {
             className='w-full max-w-lg' 
             value={search ?? ''} 
             onChange={(e) => setSearch(e.currentTarget.value)} 
-            onBlur={() => setSearch(null)}
           />
         )}
         {!showSearchBar && (

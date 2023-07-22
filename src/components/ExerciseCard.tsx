@@ -1,7 +1,23 @@
 import React from 'react'
-import SetChip from 'components/SetChip'
 import { Card, CardContent, CardHeader } from './Card'
 import { useExerciseStore } from 'stores/exercises/exercises'
+import type { LocalSet } from 'types/exercises'
+
+function getMaxSetWeight (sets: LocalSet[]): string | null {
+  let topWeight: number | undefined
+  let metric: string | undefined
+
+  for (const set of sets) {
+    if (set.weight !== undefined && (!topWeight || set.weight > topWeight)) {
+      topWeight = set.weight
+      metric = set.weightMetric
+    }
+  }
+
+  return (topWeight !== undefined && metric !== undefined) 
+    ? `${topWeight}${metric}`
+    : null
+}
 
 export interface ExerciseCardProps {
   exerciseId: string
@@ -13,6 +29,8 @@ const ExerciseCard: React.FC<ExerciseCardProps> = (props) => {
   const { exercisesById } = useExerciseStore()
 
   const { sets = [], name = '' } = exercisesById[exerciseId] ?? {}
+  
+  const maxSetWeight = getMaxSetWeight(sets)
 
   return (
     <Card onClick={onClick} className='flex justify-between py-4 px-6 items-center hover:bg-accent cursor-pointer'>
@@ -22,16 +40,11 @@ const ExerciseCard: React.FC<ExerciseCardProps> = (props) => {
           </h3>
         </CardHeader>
       <CardContent className='p-0 overflow-auto'>
-        <div className='flex items-center gap-4'>
-          {sets.map(set => (
-            <SetChip 
-              weightMetric={set.weightMetric}
-              key={set.id}
-              weight={set.weight} 
-              reps={set.reps} 
-            />
-          ))}
-        </div>
+        {maxSetWeight !== null && (
+          <Card className='py-2 px-4 w-fit whitespace-nowrap'>
+          <span className='font-bold'>{maxSetWeight}</span>
+        </Card>
+        )}
       </CardContent>
     </Card>
   )

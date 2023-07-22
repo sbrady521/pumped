@@ -109,8 +109,10 @@ export const EditExerciseForm: React.FC<EditExerciseFormProps> = (props) => {
           <Button 
             onClick={() =>  { 
               if (!exercise) return
-              const { name, description, sets } = exercise
-              updateExercise({ name, description, sets }) 
+              const { sets } = exercise
+              const finalExercise = { name, description, sets }
+              exerciseChanged({ id: exercise.id, ...finalExercise })
+              updateExercise(finalExercise) 
               // eslint-disable-next-line @typescript-eslint/no-floating-promises
               push('/exercises')
             }}
