@@ -37,6 +37,7 @@ export const ExerciseList: React.FC = () => {
           <Searchbar 
             autoFocus={isMobile}
             className='w-full max-w-lg' 
+            onBlur={() => setSearch(null)}
             value={search ?? ''} 
             onChange={(e) => setSearch(e.currentTarget.value)} 
           />

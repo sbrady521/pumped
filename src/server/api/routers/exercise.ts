@@ -1,7 +1,6 @@
 import { z } from "zod";
 
 import { createTRPCRouter, protectedProcedure } from "../trpc";
-import { getServerAuthSession } from "server/auth";
 
 const exerciseWithSets = z.object({
   name: z.string(),
