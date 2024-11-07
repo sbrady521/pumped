@@ -28,7 +28,16 @@ export const ExerciseList: React.FC = () => {
 
   const cards = isLoading 
     ? Array.from({ length: 15 }, (_, idx) => <LoadingExerciseCard key={idx} />)
-    : filteredExerciseIds?.map(id => <ExerciseCard key={id} onClick={() => { push(`/exercises/${id}`) }} exerciseId={id} />)
+    : filteredExerciseIds?.map(id => (
+      <ExerciseCard 
+        key={id} 
+        onClick={() => { 
+          push(`/exercises/${id}`) 
+          setTimeout((): void => { setSearch(null) }, 1000)
+        }} 
+        exerciseId={id} 
+      />
+    ))
 
   return (
     <div className="">
@@ -37,7 +46,6 @@ export const ExerciseList: React.FC = () => {
           <Searchbar 
             autoFocus={isMobile}
             className='w-full max-w-lg' 
-            onBlur={() => setSearch(null)}
             value={search ?? ''} 
             onChange={(e) => setSearch(e.currentTarget.value)} 
           />
